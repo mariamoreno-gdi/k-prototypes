@@ -1,0 +1,976 @@
+<title>AA Dashboard Draft · Analytics Proposal 2026</title>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#F2F5F7;--s1:#FFFFFF;--s2:#EBF0F3;--s3:#DEE6EB;
+  --bd:#CBD5DB;--bd2:#A9B7C0;
+  --t:#1E2A31;--t2:#4C5D68;--t3:#8FA3AE;
+  --ac:#00708D;--tl:#0097B5;--or:#D95F1A;--rd:#C0392B;--gn:#1A8A60;--yl:#A36A00;--pu:#6B45C0;
+}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',system-ui,sans-serif;background:var(--bg);color:var(--t);font-size:13px;line-height:1.45;-webkit-font-smoothing:antialiased;height:100vh;display:flex;flex-direction:column;overflow:hidden}
+
+.topbar{height:44px;background:#FFFFFF;border-bottom:1px solid var(--bd);display:flex;align-items:center;flex-shrink:0;z-index:200}
+.tb-logo{width:44px;height:44px;background:#00708D;display:flex;align-items:center;justify-content:center;font-weight:900;font-size:17px;color:#fff;font-style:italic;letter-spacing:-1px;flex-shrink:0}
+.tb-brand{padding:0 14px;font-size:12px;color:var(--t2);display:flex;align-items:center;gap:6px;border-right:1px solid var(--bd);height:100%;white-space:nowrap}
+.tb-brand strong{color:var(--t);font-weight:600}
+.tb-ws{padding:0 14px;font-size:12px;color:var(--t);font-weight:500;flex:1;display:flex;align-items:center;gap:8px;min-width:0}
+.tb-ws .sep{color:var(--t3)}
+.tb-ws .ws-name{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.tb-controls{display:flex;align-items:center;gap:8px;padding:0 12px;flex-shrink:0}
+.btn{border:1px solid var(--bd2);background:var(--s2);color:var(--t);border-radius:4px;padding:4px 10px;font-size:11.5px;cursor:pointer;display:inline-flex;align-items:center;gap:5px;white-space:nowrap}
+.btn-ac{background:var(--ac);border-color:var(--ac);color:#fff}
+.date-chip{font-size:11px;color:var(--t2);border:1px solid var(--bd);border-radius:4px;padding:4px 10px;background:var(--s1)}
+
+.app{display:flex;flex:1;overflow:hidden}
+
+.sidebar{width:220px;background:var(--s1);border-right:1px solid var(--bd);display:flex;flex-direction:column;flex-shrink:0;overflow-y:auto}
+.sb-section{padding:10px 0 4px}
+.sb-label{font-size:10px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--t3);padding:0 14px 8px}
+.nav-item{display:flex;align-items:center;gap:9px;padding:7px 14px;cursor:pointer;color:var(--t2);font-size:12px;font-weight:450;border-left:3px solid transparent;transition:background .1s,color .1s}
+.nav-item:hover{background:var(--s2);color:var(--t)}
+.nav-item.active{background:var(--s2);color:var(--t);border-left-color:var(--ac);font-weight:500}
+.nav-icon{width:15px;height:15px;flex-shrink:0;opacity:.65}
+.nav-item.active .nav-icon{opacity:1}
+.nav-badge{margin-left:auto;font-size:10px;font-weight:700;background:var(--s3);color:var(--t2);border-radius:10px;padding:1px 6px;flex-shrink:0}
+.nav-item.active .nav-badge{background:rgba(0,112,141,.15);color:var(--ac)}
+.nb-mock{background:rgba(155,108,244,.18)!important;color:#6B45C0!important}
+.sb-div{height:1px;background:var(--bd);margin:6px 0}
+.sb-gaps{margin-top:auto;padding:10px 14px;border-top:1px solid var(--bd);font-size:10.5px;color:var(--t3);line-height:1.7}
+.sb-gaps strong{color:var(--t2);font-weight:600;display:block;margin-bottom:3px}
+
+.content{flex:1;overflow-y:auto;overflow-x:hidden;background:var(--bg)}
+.dashboard{display:none}
+.dashboard.active{display:block}
+
+.ph{padding:12px 18px 10px;border-bottom:1px solid var(--bd);background:var(--s1);display:flex;align-items:flex-start;justify-content:space-between;gap:12px}
+.ph-left{}
+.ph-row{display:flex;align-items:center;gap:10px;margin-bottom:4px;flex-wrap:wrap}
+.ph-title{font-size:14.5px;font-weight:600}
+.ph-desc{font-size:11.5px;color:var(--t2);max-width:700px;line-height:1.55}
+.tag{font-size:9.5px;font-weight:700;letter-spacing:.07em;text-transform:uppercase;padding:2px 7px;border-radius:3px}
+.tag-exec{background:rgba(0,112,141,.1);color:#00708D}
+.tag-diag{background:rgba(155,108,244,.15);color:#6B45C0}
+.tag-mix{background:rgba(229,160,0,.15);color:#A36A00}
+.tag-tech{background:rgba(204,51,51,.12);color:#C0392B}
+.pbadge{font-size:9.5px;font-weight:700;padding:2px 8px;border-radius:3px}
+.pb1{background:rgba(16,196,168,.12);color:var(--tl)}
+.pb2{background:rgba(0,112,141,.08);color:#00708D}
+.pb-mock{background:rgba(155,108,244,.12);color:#6B45C0}
+
+.scorecards{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));background:var(--bd);gap:1px;border-bottom:1px solid var(--bd)}
+.sc{background:var(--s1);padding:13px 15px;box-shadow:0 1px 0 rgba(30,42,49,.04) inset}
+.sc-label{font-size:10px;color:var(--t3);font-weight:500;letter-spacing:.02em;margin-bottom:5px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.sc-val{font-size:23px;font-weight:400;color:var(--t);font-variant-numeric:tabular-nums;letter-spacing:-.5px}
+.sc-chg{font-size:10.5px;font-weight:500;margin-top:3px}
+.up{color:var(--tl)}.dn{color:var(--rd)}.nt{color:var(--t3)}.wn{color:var(--or)}
+
+.alert{background:rgba(229,160,0,.07);border-top:1px solid rgba(229,160,0,.2);border-bottom:1px solid rgba(229,160,0,.2);padding:7px 16px;font-size:11px;color:var(--yl);display:flex;align-items:center;gap:6px}
+.mock-alert{background:rgba(155,108,244,.06);border-top:1px solid rgba(155,108,244,.22);border-bottom:1px solid rgba(155,108,244,.22);padding:7px 16px;font-size:11px;color:#6B45C0;display:flex;align-items:center;gap:6px}
+
+.wrow{display:grid;border-bottom:1px solid var(--bd)}
+.w2{grid-template-columns:2fr 1fr}
+.w11{grid-template-columns:1fr 1fr}
+.w111{grid-template-columns:1fr 1fr 1fr}
+.w1{grid-template-columns:1fr}
+.widget{background:var(--s1);border-right:1px solid var(--bd);overflow:hidden}
+.widget:last-child{border-right:none}
+.wh{padding:9px 14px 7px;border-bottom:1px solid var(--bd);display:flex;align-items:flex-start;justify-content:space-between}
+.wh-title{font-size:11.5px;font-weight:600;color:var(--t)}
+.wh-sub{font-size:10px;color:var(--t3);margin-top:1px}
+.wcv{padding:8px 12px 12px}
+canvas{display:block;width:100%}
+
+.ff-wrap{overflow-x:auto}
+.ff{width:100%;border-collapse:collapse;font-size:11.5px;font-variant-numeric:tabular-nums}
+.ff th{background:var(--s2);padding:6px 12px;text-align:left;font-size:10px;font-weight:700;color:var(--t2);letter-spacing:.03em;border-bottom:1px solid var(--bd);white-space:nowrap;cursor:pointer;text-transform:uppercase}
+.ff th:not(:first-child){text-align:right}
+.ff td{padding:6px 12px;border-bottom:1px solid var(--bd);color:var(--t2)}
+.ff td:first-child{color:var(--t)}
+.ff td:not(:first-child){text-align:right}
+.ff tr:hover td{background:var(--s2)}
+.mbar{display:inline-block;height:3px;background:var(--ac);border-radius:2px;opacity:.3;margin-right:7px;vertical-align:middle}
+.tu{color:var(--tl);font-size:10px}.td{color:var(--rd);font-size:10px}
+.twn{color:var(--or);font-size:10px}
+
+.hm-wrap{padding:10px 14px 14px;overflow-x:auto}
+.hm{border-collapse:separate;border-spacing:3px;font-size:10.5px}
+.hm th{padding:4px 6px;font-size:9.5px;font-weight:700;color:var(--t3);text-align:center;white-space:nowrap}
+.hm td{width:56px;height:32px;text-align:center;font-weight:600;border-radius:4px;cursor:default;font-variant-numeric:tabular-nums;font-size:11px}
+.hm .rl{text-align:left;padding:0 12px 0 0;color:var(--t2);white-space:nowrap;font-size:10.5px;background:transparent!important}
+
+.tl-wrap{overflow-x:auto}
+.tl{width:100%;border-collapse:collapse;font-size:12px;font-variant-numeric:tabular-nums}
+.tl th{padding:8px 12px;font-size:10px;font-weight:700;color:var(--t2);border-bottom:1px solid var(--bd);text-transform:uppercase;letter-spacing:.03em}
+.tl th:not(:first-child){text-align:center}
+.tl td{padding:8px 12px;border-bottom:1px solid var(--bd);color:var(--t);font-size:11.5px}
+.tl td:not(:first-child){text-align:center}
+.tl-cell{display:inline-flex;flex-direction:column;align-items:center;gap:3px}
+.tl-dot{width:9px;height:9px;border-radius:50%}
+.tl-v{font-size:10px;color:var(--t2)}
+
+.fn-note{padding:6px 14px;font-size:10.5px;color:var(--t3);display:flex;align-items:center;gap:5px}
+
+/* FILTER BAR */
+.filter-bar{height:40px;background:var(--s1);border-bottom:1px solid var(--bd);display:flex;align-items:center;padding:0 16px;gap:14px;flex-shrink:0;overflow-x:auto}
+.fb-group{display:flex;align-items:center;gap:6px;flex-shrink:0}
+.fb-label{font-size:9.5px;font-weight:700;letter-spacing:.07em;text-transform:uppercase;color:var(--t3);white-space:nowrap}
+.fb-chip{font-size:11px;padding:2px 9px;border-radius:10px;border:1px solid var(--bd2);color:var(--t2);cursor:pointer;background:transparent;white-space:nowrap;user-select:none}
+.fb-chip.sel{background:var(--ac);border-color:var(--ac);color:#fff}
+.fb-div{width:1px;height:18px;background:var(--bd);flex-shrink:0}
+.fb-sel{font-size:11px;color:var(--t2);border:1px solid var(--bd);border-radius:4px;padding:3px 9px;background:var(--s2);cursor:pointer;display:inline-flex;align-items:center;gap:5px;white-space:nowrap;user-select:none}
+.fb-right{margin-left:auto;display:flex;align-items:center;gap:8px;flex-shrink:0}
+.fb-compare-label{font-size:10px;color:var(--t3)}
+.fb-active{font-size:9.5px;background:rgba(16,196,168,.1);color:var(--tl);padding:2px 7px;border-radius:3px;font-weight:600;white-space:nowrap}
+
+.err-badge{display:inline-block;font-size:9.5px;font-weight:700;padding:1px 6px;border-radius:3px}
+.err-crit{background:rgba(204,51,51,.15);color:#C0392B}
+.err-up{background:rgba(255,123,60,.12);color:var(--or)}
+.err-stab{background:rgba(92,98,133,.2);color:var(--t3)}
+.err-dn{background:rgba(16,196,168,.1);color:var(--tl)}
+
+::-webkit-scrollbar{width:5px;height:5px}
+::-webkit-scrollbar-track{background:transparent}
+::-webkit-scrollbar-thumb{background:var(--bd2);border-radius:3px}
+</style>
+
+<!-- TOPBAR -->
+<div class="topbar">
+  <div class="tb-logo">K</div>
+  <div class="tb-brand"><strong>Adobe Analytics</strong> Draft</div>
+  <div class="tb-ws">
+    <span style="color:var(--t3)">Projects</span>
+    <span class="sep">/</span>
+    <span class="ws-name">Dashboard Proposal · Website Analytics (July 2026)</span>
+  </div>
+  <div class="tb-controls">
+    <div class="date-chip">23 Jun – 23 Jul, 2026</div>
+    <button class="btn" onclick="downloadHTML()">⬇ Download HTML</button>
+    <button class="btn btn-ac">Share</button>
+  </div>
+</div>
+
+<!-- FILTER BAR -->
+<div class="filter-bar">
+  <div class="fb-group">
+    <span class="fb-label">Market</span>
+    <span class="fb-chip sel" onclick="selectChip(this)">All</span>
+    <span class="fb-chip" onclick="selectChip(this)">ES</span>
+    <span class="fb-chip" onclick="selectChip(this)">IT</span>
+    <span class="fb-chip" onclick="selectChip(this)">FR</span>
+    <span class="fb-chip" onclick="selectChip(this)">PT</span>
+    <span class="fb-chip" onclick="selectChip(this)">DE</span>
+  </div>
+  <div class="fb-div"></div>
+  <div class="fb-group">
+    <span class="fb-label">Period</span>
+    <span class="fb-sel">23 Jun – 23 Jul, 2026 ▾</span>
+  </div>
+  <div class="fb-right">
+    <span class="fb-compare-label">Compare with</span>
+    <span class="fb-sel">Previous month ▾</span>
+  </div>
+</div>
+
+<div class="app">
+<nav class="sidebar">
+  <div class="sb-section">
+    <div class="sb-label">Dashboards</div>
+
+    <div class="nav-item active" onclick="show(0,this)">
+      <svg class="nav-icon" viewBox="0 0 16 16" fill="currentColor"><rect x="1" y="1" width="6" height="6" rx="1"/><rect x="9" y="1" width="6" height="6" rx="1" opacity=".5"/><rect x="1" y="9" width="6" height="6" rx="1" opacity=".5"/><rect x="9" y="9" width="6" height="6" rx="1" opacity=".3"/></svg>
+      Global Performance
+      <span class="nav-badge">P1</span>
+    </div>
+
+    <div class="nav-item" onclick="show(1,this)">
+      <svg class="nav-icon" viewBox="0 0 16 16" fill="currentColor"><rect x="1" y="9" width="4" height="6" rx="1" opacity=".4"/><rect x="6" y="5" width="4" height="10" rx="1" opacity=".65"/><rect x="11" y="2" width="4" height="13" rx="1"/></svg>
+      Leads by Config.
+      <span class="nav-badge">P2</span>
+    </div>
+
+    <div class="nav-item" onclick="show(2,this)">
+      <svg class="nav-icon" viewBox="0 0 16 16" fill="currentColor"><rect x="2" y="2" width="12" height="3" rx="1"/><rect x="2" y="6.5" width="9" height="3" rx="1" opacity=".6"/><rect x="2" y="11" width="6" height="3" rx="1" opacity=".35"/></svg>
+      Funnel End-to-End
+      <span class="nav-badge">P3</span>
+    </div>
+
+    <div class="nav-item" onclick="show(3,this)">
+      <svg class="nav-icon" viewBox="0 0 16 16" fill="currentColor"><rect x="1" y="1" width="14" height="8" rx="1"/><rect x="1" y="11" width="9" height="2" rx="1" opacity=".55"/><rect x="1" y="14" width="6" height="1.5" rx=".75" opacity=".3"/></svg>
+      PDP &amp; Catalogue (PLP)
+      <span class="nav-badge">P4</span>
+    </div>
+
+    <div class="nav-item" onclick="show(4,this)">
+      <svg class="nav-icon" viewBox="0 0 16 16" fill="currentColor"><rect x="1" y="1" width="6" height="3" rx="1"/><rect x="9" y="1" width="6" height="3" rx="1" opacity=".6"/><rect x="1" y="6" width="6" height="3" rx="1" opacity=".6"/><rect x="9" y="6" width="6" height="3" rx="1" opacity=".4"/><rect x="1" y="11" width="6" height="3" rx="1" opacity=".4"/><rect x="9" y="11" width="6" height="3" rx="1" opacity=".25"/></svg>
+      Multi-Market Comparison
+      <span class="nav-badge">P5</span>
+    </div>
+
+
+    <div class="nav-item" onclick="show(5,this)">
+      <svg class="nav-icon" viewBox="0 0 16 16" fill="currentColor"><rect x="1" y="1" width="3" height="3" rx=".5"/><rect x="5" y="1" width="9" height="3" rx=".5" opacity=".6"/><rect x="1" y="6" width="3" height="3" rx=".5" opacity=".65"/><rect x="5" y="6" width="9" height="3" rx=".5" opacity=".4"/><rect x="1" y="11" width="3" height="3" rx=".5" opacity=".35"/><rect x="5" y="11" width="7" height="3" rx=".5" opacity=".2"/></svg>
+      Search &amp; Filters
+      <span class="nav-badge">P6</span>
+    </div>
+
+    <div class="nav-item" onclick="show(6,this)">
+      <svg class="nav-icon" viewBox="0 0 16 16" fill="currentColor"><rect x="1" y="2" width="14" height="2.5" rx="1" opacity=".3"/><rect x="1" y="6.5" width="14" height="2.5" rx="1"/><rect x="1" y="11" width="14" height="2.5" rx="1" opacity=".3"/></svg>
+      Errors &amp; Friction
+      <span class="nav-badge">P7</span>
+    </div>
+  </div>
+
+  <div class="sb-gaps">
+    <strong>Real Data Gaps</strong>
+    ⚠ No campaign/UTM data<br>
+    ⚠ No "form start" event<br>
+    ⚠ form_type without value list<br>
+    ⚠ confirmed-contract empty<br>
+    ⚠ monthly_price without bins
+  </div>
+</nav>
+
+<main class="content">
+
+<!-- ═══ D0: GLOBAL PERFORMANCE ═══ -->
+<div id="d0" class="dashboard active">
+  <div class="ph">
+    <div class="ph-left">
+      <div class="ph-row">
+        <div class="ph-title">1. Global Performance Overview</div>
+        <span class="tag tag-exec">Executive</span>
+        <span class="pbadge pb1">▲ Build Priority 1</span>
+      </div>
+      <div class="ph-desc">Single view of global lead generation performance. Dimensions: market, product_category. Metrics: Visits, Lead Submissions, CVR (calc.), Impressions, CTR. Visualisation: Scorecards + trend line + freeform table + bar ranking.</div>
+    </div>
+  </div>
+  <div class="scorecards">
+    <div class="sc"><div class="sc-label">Visits</div><div class="sc-val">284.3K</div><div class="sc-chg up">▲ +12.3% vs prev. month</div></div>
+    <div class="sc"><div class="sc-label">Lead Submissions</div><div class="sc-val">8,247</div><div class="sc-chg up">▲ +8.1%</div></div>
+    <div class="sc"><div class="sc-label">CVR (calculated)</div><div class="sc-val">2.90%</div><div class="sc-chg wn">▼ −0.28 pp</div></div>
+    <div class="sc"><div class="sc-label">Vehicle Impressions</div><div class="sc-val">1.24M</div><div class="sc-chg up">▲ +18.4%</div></div>
+    <div class="sc"><div class="sc-label">CTR</div><div class="sc-val">6.63%</div><div class="sc-chg up">▲ +1.10 pp</div></div>
+  </div>
+  <div class="alert">⚠ No acquisition/campaign data (channel, source, UTM) · marketing segmentation not yet available.</div>
+  <div class="wrow w2">
+    <div class="widget">
+      <div class="wh"><div><div class="wh-title">Visits and Lead Submissions · Last 30 days</div><div class="wh-sub">Dimension: Date · Metrics: Visits (solid), Leads (dashed)</div></div></div>
+      <div class="wcv"><canvas id="cv-trend" height="145"></canvas></div>
+    </div>
+    <div class="widget">
+      <div class="wh"><div><div class="wh-title">Leads by Market</div><div class="wh-sub">dim: market</div></div></div>
+      <div class="wcv"><canvas id="cv-mkt" height="145"></canvas></div>
+    </div>
+  </div>
+  <div class="wrow w1">
+    <div class="widget">
+      <div class="wh"><div class="wh-title">Freeform table · product_category × Metrics</div></div>
+      <div class="ff-wrap">
+        <table class="ff">
+          <thead><tr><th>product_category</th><th>Visits ↓</th><th>Lead Submissions</th><th>CVR</th><th>Impressions</th><th>CTR</th><th>Δ CVR</th></tr></thead>
+          <tbody>
+            <tr><td><span class="mbar" style="width:70px"></span>SUV / 4WD</td><td>91,820</td><td>2,934</td><td>3.19%</td><td>412,300</td><td>7.12%</td><td class="tu">▲ +0.21 pp</td></tr>
+            <tr><td><span class="mbar" style="width:55px"></span>Saloon / Sedan</td><td>72,440</td><td>2,108</td><td>2.91%</td><td>298,600</td><td>6.43%</td><td class="tu">▲ +0.08 pp</td></tr>
+            <tr><td><span class="mbar" style="width:40px"></span>Electric / PHEV</td><td>51,700</td><td>1,744</td><td>3.37%</td><td>241,000</td><td>8.20%</td><td class="tu">▲ +0.55 pp</td></tr>
+            <tr><td><span class="mbar" style="width:26px"></span>Van / Commercial</td><td>38,210</td><td>844</td><td>2.21%</td><td>162,400</td><td>5.10%</td><td class="td">▼ −0.12 pp</td></tr>
+            <tr><td><span class="mbar" style="width:18px"></span>Other</td><td>30,150</td><td>617</td><td>2.05%</td><td>129,300</td><td>4.78%</td><td class="td">▼ −0.40 pp</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══ D1: LEADS POR CONFIGURACIÓN ═══ -->
+<div id="d1" class="dashboard">
+  <div class="ph">
+    <div class="ph-left">
+      <div class="ph-row">
+        <div class="ph-title">2. Leads by Vehicle Configuration</div>
+        <span class="tag tag-mix">Mixed</span>
+        <span class="pbadge pb1">▲ Build Priority 2</span>
+      </div>
+      <div class="ph-desc">Which configurations generate the most leads. Dimensions: fuel_type, transmission, contract_months, avg_monthly_price. New vs. Used.</div>
+    </div>
+  </div>
+  <div class="scorecards">
+    <div class="sc"><div class="sc-label">Leads · New Cars</div><div class="sc-val">5,394</div><div class="sc-chg up">▲ +11.2%</div></div>
+    <div class="sc"><div class="sc-label">Leads · Used Cars</div><div class="sc-val">2,853</div><div class="sc-chg up">▲ +2.7%</div></div>
+    <div class="sc"><div class="sc-label">Avg Monthly Price (leads)</div><div class="sc-val">€ 389</div><div class="sc-chg nt">no change</div></div>
+    <div class="sc"><div class="sc-label">Most frequent contract_months</div><div class="sc-val">48 m</div><div class="sc-chg nt">48 · 60 · 36 m</div></div>
+  </div>
+  <div class="wrow w111">
+    <div class="widget">
+      <div class="wh"><div class="wh-title">Leads by Fuel Type</div></div>
+      <div class="wcv"><canvas id="cv-fuel" height="165"></canvas></div>
+    </div>
+    <div class="widget">
+      <div class="wh"><div class="wh-title">Leads by Transmission</div></div>
+      <div class="wcv"><canvas id="cv-trans" height="165"></canvas></div>
+    </div>
+    <div class="widget">
+      <div class="wh"><div class="wh-title">Leads by contract_months</div></div>
+      <div class="wcv"><canvas id="cv-contract" height="165"></canvas></div>
+    </div>
+  </div>
+  <div class="wrow w1">
+    <div class="widget">
+      <div class="wh"><div class="wh-title">New vs. Used · Breakdown by product_category</div></div>
+      <div class="ff-wrap">
+        <table class="ff">
+          <thead><tr><th>product_category</th><th>New Leads</th><th>New CVR</th><th>Used Leads</th><th>Used CVR</th><th>Avg New Price</th><th>Avg Used Price</th></tr></thead>
+          <tbody>
+            <tr><td>SUV / 4WD</td><td>1,893</td><td>3.42%</td><td>1,041</td><td>2.88%</td><td>€ 499</td><td>€ 312</td></tr>
+            <tr><td>Saloon / Sedan</td><td>1,380</td><td>3.12%</td><td>728</td><td>2.68%</td><td>€ 358</td><td>€ 245</td></tr>
+            <tr><td>Electric / PHEV</td><td>1,342</td><td>4.01%</td><td>402</td><td>2.19%</td><td>€ 549</td><td>€ 380</td></tr>
+            <tr><td>Van / Commercial</td><td>516</td><td>2.38%</td><td>328</td><td>1.92%</td><td>€ 420</td><td>€ 289</td></tr>
+            <tr><td>Other</td><td>263</td><td>1.98%</td><td>354</td><td>2.14%</td><td>€ 299</td><td>€ 198</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <div class="wrow w1">
+    <div class="widget">
+      <div class="wh">
+        <div>
+          <div class="wh-title">Which price and contract length combination converts best?</div>
+          <div class="wh-sub">CVR by monthly price range × contract duration · deeper colour = higher conversion</div>
+        </div>
+      </div>
+      <div class="hm-wrap"><table class="hm" id="hm-price"></table></div>
+      <div class="fn-note" style="padding-bottom:10px">Highest conversion sits at 48-month contracts with a monthly fee of €450–€550 · can guide which configurations to surface first in the catalogue.</div>
+    </div>
+  </div>
+
+  <div class="wrow w1">
+    <div class="widget">
+      <div class="wh">
+        <div>
+          <div class="wh-title">Do used car buyers prefer shorter contracts?</div>
+          <div class="wh-sub">CVR by contract length · New (blue) vs. Used (orange) · dim: new/used × contract_months</div>
+        </div>
+      </div>
+      <div class="wcv"><canvas id="cv-newused" height="185"></canvas></div>
+      <div class="fn-note" style="padding-bottom:10px">Used cars convert best on 36-month contracts; new cars on 48 months · can guide which financing options to show first based on the vehicle type being browsed.</div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══ D2: FUNNEL ═══ -->
+<div id="d2" class="dashboard">
+  <div class="ph">
+    <div class="ph-left">
+      <div class="ph-row">
+        <div class="ph-title">3. End-to-End Conversion Funnel</div>
+        <span class="tag tag-diag">Diagnostic</span>
+        <span class="pbadge pb1">▲ Build Priority 3</span>
+      </div>
+      <div class="ph-desc">Identify drop-offs across the 5 funnel steps. Compare by market and condition (new/used). Visualisation: AA Fallout (or Flow for alternative exit paths).</div>
+    </div>
+  </div>
+  <div class="scorecards">
+    <div class="sc"><div class="sc-label">Global Conversion Rate</div><div class="sc-val">2.90%</div><div class="sc-chg wn">Biggest drop: PLP → PDP</div></div>
+    <div class="sc"><div class="sc-label">Funnel Entry</div><div class="sc-val">284.3K</div><div class="sc-chg nt">Total visits</div></div>
+    <div class="sc"><div class="sc-label">Reached Form</div><div class="sc-val">18,420</div><div class="sc-chg nt">6.5% of visits</div></div>
+    <div class="sc"><div class="sc-label">Lead Submissions</div><div class="sc-val">8,247</div><div class="sc-chg dn">▼ 55.2% form abandonment</div></div>
+  </div>
+  <div class="alert">⚠ No "form start" event · actual form abandonment rate is approximated via form_type.</div>
+  <div class="wrow w11">
+    <div class="widget">
+      <div class="wh"><div><div class="wh-title">Fallout · All Markets</div><div class="wh-sub">AA Fallout Visualisation</div></div></div>
+      <canvas id="cv-funnel" height="270" style="padding:0"></canvas>
+    </div>
+    <div class="widget">
+      <div class="wh"><div><div class="wh-title">% continuing to next step · by market</div><div class="wh-sub">Breakdowns: market</div></div></div>
+      <div class="ff-wrap" style="margin-top:2px">
+        <table class="ff">
+          <thead><tr><th>Funnel Step</th><th>ES</th><th>IT</th><th>FR</th><th>PT</th><th>Δ worst</th></tr></thead>
+          <tbody>
+            <tr><td>Home → Browse</td><td>71.2%</td><td>68.4%</td><td>73.1%</td><td>69.8%</td><td class="td">IT −2.8 pp</td></tr>
+            <tr><td>Browse → PLP</td><td>48.3%</td><td>51.2%</td><td>46.9%</td><td>44.1%</td><td class="td">PT −4.2 pp</td></tr>
+            <tr><td style="color:var(--or)">PLP → PDP ⚡</td><td>32.1%</td><td>29.4%</td><td>34.8%</td><td>28.7%</td><td class="td">PT −3.4 pp</td></tr>
+            <tr><td>PDP → Lead Form</td><td>61.4%</td><td>59.8%</td><td>64.2%</td><td>57.9%</td><td class="td">PT −3.5 pp</td></tr>
+            <tr><td>Lead Form → Submit</td><td>46.8%</td><td>44.1%</td><td>51.3%</td><td>42.2%</td><td class="td">PT −4.6 pp</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="fn-note">⚡ Biggest global drop · priority optimisation: PLP → PDP transition</div>
+    </div>
+  </div>
+
+  <div class="wrow w1">
+    <div class="widget">
+      <div class="wh">
+        <div>
+          <div class="wh-title">Which form type converts best?</div>
+          <div class="wh-sub">CVR and leads generated · dim: form_type · bars by conversion rate</div>
+        </div>
+      </div>
+      <div class="wcv"><canvas id="cv-formtype" height="165"></canvas></div>
+      <div class="fn-note" style="padding-bottom:10px">Test drive requests have the highest CVR (4.8%) because users arriving there have very defined purchase intent · though less volume than "Request information". Useful for deciding which form to promote most prominently on the PDP.</div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══ D3: PDP & CATÁLOGO ═══ -->
+<div id="d3" class="dashboard">
+  <div class="ph">
+    <div class="ph-left">
+      <div class="ph-row">
+        <div class="ph-title">4. PDP &amp; Catalogue (PLP)</div>
+        <span class="tag tag-diag">Diagnostic</span>
+        <span class="pbadge pb2">◆ Build Priority 4</span>
+      </div>
+      <div class="ph-desc">Grid visibility and vehicle discovery. Same tagging block as D1, more granular. Dimensions: _model, list_type, position, PDP Views. Viz: CTR heatmap + CTR decay by position.</div>
+    </div>
+  </div>
+  <div class="scorecards">
+    <div class="sc"><div class="sc-label">PLP Views</div><div class="sc-val">182.4K</div><div class="sc-chg up">▲ +14.2%</div></div>
+    <div class="sc"><div class="sc-label">PDP Views</div><div class="sc-val">58,620</div><div class="sc-chg up">▲ +9.8%</div></div>
+    <div class="sc"><div class="sc-label">PLP→PDP Ratio</div><div class="sc-val">32.1%</div><div class="sc-chg dn">▼ −1.4 pp</div></div>
+    <div class="sc"><div class="sc-label">Avg. click position</div><div class="sc-val">3.2</div><div class="sc-chg wn">Pos. 1 CTR falling</div></div>
+  </div>
+  <div class="wrow w11">
+    <div class="widget">
+      <div class="wh"><div><div class="wh-title">CTR Heatmap · Position × Listing Type</div><div class="wh-sub">Higher intensity = higher CTR</div></div></div>
+      <div class="hm-wrap"><table class="hm" id="hm-tbl"></table></div>
+    </div>
+    <div class="widget">
+      <div class="wh"><div><div class="wh-title">CTR Decay by Grid Position</div><div class="wh-sub">dim: position (1–12) · by list_type</div></div></div>
+      <div class="wcv"><canvas id="cv-decay" height="185"></canvas></div>
+    </div>
+  </div>
+  <div class="wrow w1">
+    <div class="widget">
+      <div class="wh"><div class="wh-title">Top models · PDP Views, Leads generated, CVR, Avg position</div></div>
+      <div class="ff-wrap">
+        <table class="ff">
+          <thead><tr><th>_model</th><th>PDP Views</th><th>Lead Submissions</th><th>CVR</th><th>Avg Position (click)</th><th>Dominant list_type</th></tr></thead>
+          <tbody>
+            <tr><td>Toyota RAV4 Hybrid</td><td>6,840</td><td>312</td><td>4.56%</td><td>2.1</td><td>featured</td></tr>
+            <tr><td>Toyota Corolla Cross</td><td>5,920</td><td>248</td><td>4.19%</td><td>2.4</td><td>featured</td></tr>
+            <tr><td>Toyota bZ4X</td><td>4,620</td><td>201</td><td>4.35%</td><td>1.9</td><td>featured</td></tr>
+            <tr><td>Toyota Yaris Cross</td><td>5,110</td><td>194</td><td>3.80%</td><td>3.2</td><td>standard</td></tr>
+            <tr><td>Toyota C-HR</td><td>4,870</td><td>168</td><td>3.45%</td><td>3.8</td><td>standard</td></tr>
+            <tr><td>Toyota Corolla</td><td>3,980</td><td>122</td><td>3.07%</td><td>4.5</td><td>standard</td></tr>
+            <tr><td>Toyota Camry</td><td>3,750</td><td>118</td><td>3.15%</td><td>4.1</td><td>standard</td></tr>
+            <tr><td>Toyota GR Yaris</td><td>3,410</td><td>98</td><td>2.87%</td><td>5.2</td><td>organic</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══ D4: CROSS-MARKET ═══ -->
+<div id="d4" class="dashboard">
+  <div class="ph">
+    <div class="ph-left">
+      <div class="ph-row">
+        <div class="ph-title">5. Multi-Market Comparison</div>
+        <span class="tag tag-exec">Executive</span>
+        <span class="pbadge pb2">◆ Build Priority 5</span>
+      </div>
+      <div class="ph-desc">Consistent KPI comparison across countries using the same product taxonomy. Traffic-light visualisation. Validated once taxonomy is consolidated across all markets.</div>
+    </div>
+  </div>
+  <div class="scorecards">
+    <div class="sc"><div class="sc-label">Best CVR</div><div class="sc-val">IT 3.4%</div><div class="sc-chg up">▲ reference</div></div>
+    <div class="sc"><div class="sc-label">Highest CTR</div><div class="sc-val">IT 7.4%</div><div class="sc-chg up">▲ +0.8 pp vs ES</div></div>
+    <div class="sc"><div class="sc-label">Market with most drops</div><div class="sc-val">PT</div><div class="sc-chg dn">▼ CVR 2.1%</div></div>
+    <div class="sc"><div class="sc-label">Active markets</div><div class="sc-val">5</div><div class="sc-chg nt">ES · IT · FR · PT · DE</div></div>
+  </div>
+  <div class="wrow w11">
+    <div class="widget">
+      <div class="wh"><div><div class="wh-title">KPI Traffic Light by Market</div><div class="wh-sub">Green = above target · Yellow = within range · Red = below target</div></div></div>
+      <div class="tl-wrap">
+        <table class="tl">
+          <thead><tr><th>KPI</th><th>ES</th><th>IT</th><th>FR</th><th>PT</th><th>DE</th></tr></thead>
+          <tbody id="tl-body"></tbody>
+        </table>
+      </div>
+    </div>
+    <div class="widget">
+      <div class="wh"><div><div class="wh-title">CTR by Market × product_category</div><div class="wh-sub">Grouped bars</div></div></div>
+      <div class="wcv"><canvas id="cv-mktctr" height="205"></canvas></div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══ D5: BÚSQUEDA Y FILTROS (MOCK) ═══ -->
+<div id="d5" class="dashboard">
+  <div class="ph">
+    <div class="ph-left">
+      <div class="ph-row">
+        <div class="ph-title">6. Search &amp; Filters</div>
+        <span class="tag tag-diag">Diagnostic</span>
+        <span class="pbadge pb2">◆ Build Priority 6</span>
+      </div>
+      <div class="ph-desc">How the use of search and filters affects vehicle discovery. results_count (binned), ranked filter combinations, zero-result chart. Dimensions: filter_value (classified), search_term, results_count_bin.</div>
+    </div>
+  </div>
+
+  <div class="mock-alert">◈ Simulated data for design validation · production requires defined filter_value parsing rules to classify combinations consistently across markets.</div>
+
+  <div class="scorecards">
+    <div class="sc"><div class="sc-label">Total searches</div><div class="sc-val">94,320</div><div class="sc-chg up">▲ +7.2%</div></div>
+    <div class="sc"><div class="sc-label">Zero-results rate</div><div class="sc-val">8.4%</div><div class="sc-chg wn">▲ +1.1 pp</div></div>
+    <div class="sc"><div class="sc-label">Avg filters per session</div><div class="sc-val">3.2</div><div class="sc-chg up">▲ +0.4 vs prev. month</div></div>
+    <div class="sc"><div class="sc-label">Post-search CTR</div><div class="sc-val">71.3%</div><div class="sc-chg up">▲ +2.1 pp</div></div>
+  </div>
+
+  <div class="wrow w11">
+    <div class="widget">
+      <div class="wh"><div><div class="wh-title">Zero-results Rate · 30-day trend</div><div class="wh-sub">Metric: zero_result_searches / total_searches</div></div></div>
+      <div class="wcv"><canvas id="cv-zerores" height="165"></canvas></div>
+    </div>
+    <div class="widget">
+      <div class="wh"><div><div class="wh-title">results_count Distribution (bins)</div><div class="wh-sub">dim: results_count_bin · usable as breakdown dimension</div></div></div>
+      <div class="wcv"><canvas id="cv-rcount" height="165"></canvas></div>
+    </div>
+  </div>
+
+  <div class="wrow w1">
+    <div class="widget">
+      <div class="wh"><div class="wh-title">Top filter combinations · Ranked by Leads generated</div></div>
+      <div class="ff-wrap">
+        <table class="ff">
+          <thead><tr><th>filter_value Combination</th><th>Sessions with filter</th><th>Search CTR</th><th>Leads generated</th><th>CVR</th><th>Δ CVR vs no filter</th></tr></thead>
+          <tbody>
+            <tr><td><span class="mbar" style="width:60px"></span>fuel=Hybrid + price_max=€500</td><td>21,840</td><td>78.4%</td><td>1,842</td><td>4.22%</td><td class="tu">▲ +1.32 pp</td></tr>
+            <tr><td><span class="mbar" style="width:50px"></span>body=SUV + fuel=Electric</td><td>14,320</td><td>81.2%</td><td>1,234</td><td>5.12%</td><td class="tu">▲ +2.22 pp</td></tr>
+            <tr><td><span class="mbar" style="width:42px"></span>transmission=Auto + contract=48m</td><td>18,910</td><td>74.8%</td><td>987</td><td>3.84%</td><td class="tu">▲ +0.94 pp</td></tr>
+            <tr><td><span class="mbar" style="width:34px"></span>brand=Toyota + body=SUV</td><td>9,430</td><td>82.6%</td><td>876</td><td>3.62%</td><td class="tu">▲ +0.72 pp</td></tr>
+            <tr><td><span class="mbar" style="width:28px"></span>price €200–400 + new</td><td>12,670</td><td>69.3%</td><td>743</td><td>3.10%</td><td class="tu">▲ +0.20 pp</td></tr>
+            <tr><td><span class="mbar" style="width:22px"></span>fuel=Diesel + km_max=80,000</td><td>8,240</td><td>66.1%</td><td>612</td><td>2.91%</td><td class="td">▼ −0.11 pp</td></tr>
+            <tr><td><span class="mbar" style="width:14px"></span>body=Van + used</td><td>5,890</td><td>62.4%</td><td>384</td><td>2.43%</td><td class="td">▼ −0.47 pp</td></tr>
+            <tr><td><span class="mbar" style="width:8px"></span>(no filters)</td><td>74,820</td><td>58.2%</td><td>2,569</td><td>2.90%</td><td class="nt">baseline</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══ D6: ERRORES Y FRICCIÓN (MOCK) ═══ -->
+<div id="d6" class="dashboard">
+  <div class="ph">
+    <div class="ph-left">
+      <div class="ph-row">
+        <div class="ph-title">7. Errors &amp; Friction</div>
+        <span class="tag tag-tech">Technical Diagnostic</span>
+        <span class="pbadge pb2">◆ Build Priority 7</span>
+      </div>
+      <div class="ph-desc">Technical friction points blocking the experience: page errors, field/form errors, blocked sessions. Dimensions: error_type, page_section, form_field. Viz: ranked table + validation errors by form field.</div>
+    </div>
+  </div>
+
+  <div class="mock-alert">◈ Simulated data for design validation · production requires a defined form_type value list to distinguish which form type generated the error.</div>
+
+  <div class="scorecards">
+    <div class="sc"><div class="sc-label">Total errors</div><div class="sc-val">12,847</div><div class="sc-chg dn">▲ +23.1%</div></div>
+    <div class="sc"><div class="sc-label">Unique error types</div><div class="sc-val">18</div><div class="sc-chg wn">▲ +3 new this month</div></div>
+    <div class="sc"><div class="sc-label">Affected sessions</div><div class="sc-val">4,231</div><div class="sc-chg dn">1.49% of total</div></div>
+    <div class="sc"><div class="sc-label">Forms with error</div><div class="sc-val">631</div><div class="sc-chg dn">▲ 7.65% of those reaching it</div></div>
+  </div>
+
+  <div class="wrow w11">
+    <div class="widget">
+      <div class="wh"><div><div class="wh-title">Validation Errors by Field · Lead Form</div><div class="wh-sub">Error occurrences per field · dim: form_field + error_type</div></div></div>
+      <div class="wcv"><canvas id="cv-abandon" height="185"></canvas></div>
+    </div>
+    <div class="widget">
+      <div class="wh"><div><div class="wh-title">Errors by Page Section</div><div class="wh-sub">Total occurrences · dim: page_section</div></div></div>
+      <div class="wcv"><canvas id="cv-errpg" height="210"></canvas></div>
+    </div>
+  </div>
+
+  <div class="wrow w1">
+    <div class="widget">
+      <div class="wh"><div class="wh-title">Error table · error_type × section × occurrences × trend</div></div>
+      <div class="ff-wrap">
+        <table class="ff">
+          <thead><tr><th>error_type</th><th>Section / page</th><th>Occurrences</th><th>Sessions affected</th><th>Trend</th><th>Lead impact</th></tr></thead>
+          <tbody>
+            <tr>
+              <td>CRM submission fail</td><td style="text-align:left">Lead Form</td><td>631</td><td>590</td>
+              <td style="text-align:right"><span class="err-badge err-crit">▲ Growing ⚠</span></td>
+              <td style="text-align:right;color:var(--rd)">Direct blocker</td>
+            </tr>
+            <tr>
+              <td>API timeout</td><td style="text-align:left">PDP</td><td>3,421</td><td>2,103</td>
+              <td style="text-align:right"><span class="err-badge err-up">▲ +28%</span></td>
+              <td style="text-align:right;color:var(--or)">High</td>
+            </tr>
+            <tr>
+              <td>Filter state corrupt</td><td style="text-align:left">PLP</td><td>987</td><td>712</td>
+              <td style="text-align:right"><span class="err-badge err-up">▲ +41%</span></td>
+              <td style="text-align:right;color:var(--or)">Medium-high</td>
+            </tr>
+            <tr>
+              <td>Form validation error</td><td style="text-align:left">Lead Form</td><td>2,134</td><td>1,947</td>
+              <td style="text-align:right"><span class="err-badge err-dn">▼ −12%</span></td>
+              <td style="text-align:right;color:var(--or)">Medium</td>
+            </tr>
+            <tr>
+              <td>Image load failure</td><td style="text-align:left">PLP</td><td>2,876</td><td>1,842</td>
+              <td style="text-align:right"><span class="err-badge err-stab">Stable</span></td>
+              <td style="text-align:right;color:var(--t3)">Low</td>
+            </tr>
+            <tr>
+              <td>Search API error</td><td style="text-align:left">Search</td><td>1,847</td><td>1,203</td>
+              <td style="text-align:right"><span class="err-badge err-stab">Stable</span></td>
+              <td style="text-align:right;color:var(--t3)">Low</td>
+            </tr>
+            <tr>
+              <td>Session expiry mid-form</td><td style="text-align:left">Lead Form</td><td>512</td><td>480</td>
+              <td style="text-align:right"><span class="err-badge err-stab">Stable</span></td>
+              <td style="text-align:right;color:var(--t3)">Low</td>
+            </tr>
+            <tr>
+              <td>Geolocation denied</td><td style="text-align:left">Search</td><td>439</td><td>318</td>
+              <td style="text-align:right"><span class="err-badge err-dn">▼ −8%</span></td>
+              <td style="text-align:right;color:var(--t3)">Low</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+
+</main>
+</div>
+
+<script>
+function show(idx, el) {
+  document.querySelectorAll('.dashboard').forEach(d => d.classList.remove('active'));
+  document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+  document.getElementById('d' + idx).classList.add('active');
+  el.classList.add('active');
+  setTimeout(drawAll, 16);
+}
+
+function cv(id) {
+  const el = document.getElementById(id);
+  if (!el) return null;
+  const w = el.offsetWidth;
+  const h = parseInt(el.getAttribute('height')) || el.offsetHeight;
+  if (!w || !h) return null;
+  el.style.height = h + 'px';
+  el.width = w; el.height = h;
+  return { c: el.getContext('2d'), w, h };
+}
+
+const C = { ac:'#00708D', tl:'#0097B5', or:'#D95F1A', rd:'#C0392B', gn:'#1A8A60', yl:'#A36A00', pu:'#6B45C0', bd:'#CBD5DB', t:'#1E2A31', t2:'#4C5D68', t3:'#8FA3AE', bg:'#F2F5F7', s1:'#FFFFFF' };
+
+function prng(seed) {
+  let s = seed;
+  return () => { s = (s * 1664525 + 1013904223) & 0xffffffff; return (s >>> 0) / 0xffffffff; };
+}
+
+// ── Trend chart ──
+function drawTrend() {
+  const g = cv('cv-trend'); if (!g) return;
+  const { c, w, h } = g;
+  const pad = {t:18,r:16,b:28,l:48}, cw=w-pad.l-pad.r, ch=h-pad.t-pad.b, N=30;
+  const r = prng(42); const visits=[], leads=[];
+  let v=8800, l=245;
+  for(let i=0;i<N;i++){v+=(r()-.45)*620;visits.push(Math.max(6000,v));l+=(r()-.46)*18;leads.push(Math.max(190,l));}
+  const maxV=Math.max(...visits), minV=Math.min(...visits)*.95, maxL=Math.max(...leads), minL=Math.min(...leads)*.95;
+  const xp=i=>pad.l+(i/(N-1))*cw, yV=v=>pad.t+ch-((v-minV)/(maxV-minV))*ch, yL=v=>pad.t+ch-((v-minL)/(maxL-minL))*ch;
+  c.strokeStyle=C.bd;c.lineWidth=1;
+  for(let i=0;i<=4;i++){const y=pad.t+(i/4)*ch;c.beginPath();c.moveTo(pad.l,y);c.lineTo(pad.l+cw,y);c.stroke();const val=maxV-(i/4)*(maxV-minV);c.fillStyle=C.t3;c.font='9px system-ui';c.textAlign='right';c.fillText((val/1000).toFixed(0)+'K',pad.l-5,y+3);}
+  ['23 Jun','30 Jun','7 Jul','14 Jul','23 Jul'].forEach((lb,i)=>{c.fillStyle=C.t3;c.font='9px system-ui';c.textAlign='center';c.fillText(lb,xp([0,7,14,21,29][i]),h-8);});
+  c.beginPath();visits.forEach((v2,i)=>i===0?c.moveTo(xp(i),yV(v2)):c.lineTo(xp(i),yV(v2)));c.lineTo(xp(N-1),pad.t+ch);c.lineTo(xp(0),pad.t+ch);c.closePath();
+  const gr=c.createLinearGradient(0,pad.t,0,pad.t+ch);gr.addColorStop(0,C.ac+'33');gr.addColorStop(1,C.ac+'00');c.fillStyle=gr;c.fill();
+  c.beginPath();visits.forEach((v2,i)=>i===0?c.moveTo(xp(i),yV(v2)):c.lineTo(xp(i),yV(v2)));c.strokeStyle=C.ac;c.lineWidth=2;c.stroke();
+  c.beginPath();leads.forEach((v2,i)=>i===0?c.moveTo(xp(i),yL(v2)):c.lineTo(xp(i),yL(v2)));c.strokeStyle=C.tl;c.lineWidth=1.8;c.setLineDash([4,3]);c.stroke();c.setLineDash([]);
+  c.fillStyle=C.ac;c.fillRect(w-148,6,12,3);c.fillStyle=C.t2;c.font='9.5px system-ui';c.textAlign='left';c.fillText('Visits',w-132,10);
+  c.strokeStyle=C.tl;c.lineWidth=1.8;c.setLineDash([4,3]);c.beginPath();c.moveTo(w-74,7);c.lineTo(w-62,7);c.stroke();c.setLineDash([]);c.fillStyle=C.t2;c.fillText('Leads',w-58,10);
+}
+
+function drawMkt() {
+  const g=cv('cv-mkt');if(!g)return;const{c,w,h}=g;
+  const data=[{l:'ES',v:3142,col:C.ac},{l:'IT',v:2556,col:C.tl},{l:'FR',v:1567,col:C.pu},{l:'PT',v:577,col:C.yl},{l:'DE',v:405,col:C.or}];
+  const max=3142,pad={t:14,r:52,b:14,l:38},bh=19,gap=9;
+  data.forEach((d,i)=>{const y=pad.t+i*(bh+gap),bw=(w-pad.l-pad.r)*d.v/max;c.fillStyle=d.col+'20';c.fillRect(pad.l,y,w-pad.l-pad.r,bh);c.fillStyle=d.col;c.fillRect(pad.l,y,bw,bh);c.fillStyle=C.t2;c.font='10.5px system-ui';c.textAlign='right';c.fillText(d.l,pad.l-6,y+bh/2+3.5);c.fillStyle=C.t;c.textAlign='left';c.font='10px system-ui';c.fillText(d.v.toLocaleString('es-ES'),pad.l+bw+5,y+bh/2+3.5);});
+}
+
+function hBar(id,data,color){
+  const g=cv(id);if(!g)return;const{c,w,h}=g;
+  const max=Math.max(...data.map(d=>d.v)),pad={t:10,r:50,b:10,l:90},bh=17,gap=9;
+  data.forEach((d,i)=>{const y=pad.t+i*(bh+gap),bw=(w-pad.l-pad.r)*d.v/max;c.fillStyle=color+'18';c.fillRect(pad.l,y,w-pad.l-pad.r,bh);c.fillStyle=color;c.fillRect(pad.l,y,bw,bh);c.fillStyle=C.t2;c.font='10px system-ui';c.textAlign='right';c.fillText(d.l,pad.l-6,y+bh/2+3.5);c.fillStyle=C.t;c.textAlign='left';c.font='10px system-ui';c.fillText(d.v.toLocaleString('es-ES'),pad.l+bw+5,y+bh/2+3.5);});
+}
+
+function drawFuel(){hBar('cv-fuel',[{l:'Hybrid',v:2431},{l:'Petrol',v:2156},{l:'Electric',v:1744},{l:'Diesel',v:1493},{l:'PHEV',v:423}],C.tl);}
+function drawTrans(){hBar('cv-trans',[{l:'Automatic',v:5042},{l:'Manual',v:3205}],C.pu);}
+function drawContract(){hBar('cv-contract',[{l:'48 months',v:2934},{l:'60 months',v:2218},{l:'36 months',v:1804},{l:'24 months',v:890},{l:'72 months',v:401}],C.or);}
+
+function drawFunnel(){
+  const g=cv('cv-funnel');if(!g)return;const{c,w,h}=g;
+  const steps=[{l:'Home',v:284320,pct:100},{l:'Browse',v:201700,pct:70.9},{l:'PLP',v:97400,pct:34.3},{l:'PDP',v:31300,pct:11.0},{l:'Lead Form',v:18420,pct:6.5},{l:'Lead Submitted',v:8247,pct:2.9}];
+  const pad={t:14,r:60,b:14,l:14},totalH=h-pad.t-pad.b,sh=totalH/steps.length,maxW=w-pad.l-pad.r;
+  steps.forEach((step,i)=>{
+    const pw=maxW*step.pct/100,x=pad.l+(maxW-pw)/2,y=pad.t+i*sh,next=steps[i+1],nw=next?maxW*next.pct/100:pw,nx=pad.l+(maxW-nw)/2;
+    c.globalAlpha=.75-i*.08;c.fillStyle=i<3?C.ac:C.tl;
+    c.beginPath();c.moveTo(x,y);c.lineTo(x+pw,y);c.lineTo(nx+nw,y+sh-3);c.lineTo(nx,y+sh-3);c.closePath();c.fill();c.globalAlpha=1;
+    c.font='bold 11px system-ui';c.textAlign='center';c.fillStyle='#fff';c.fillText(step.l,w/2,y+sh/2-4);
+    c.font='10px system-ui';c.fillStyle='rgba(255,255,255,.8)';c.fillText(`${step.v.toLocaleString('es-ES')}  ·  ${step.pct}%`,w/2,y+sh/2+10);
+    if(next){const drop=(100-next.pct/step.pct*100).toFixed(1);c.fillStyle=parseFloat(drop)>50?C.rd:C.or;c.font='bold 9px system-ui';c.textAlign='right';c.fillText(`−${drop}%`,w-pad.r+52,y+sh-8);}
+  });
+}
+
+function drawDecay(){
+  const g=cv('cv-decay');if(!g)return;const{c,w,h}=g;
+  const pad={t:18,r:82,b:28,l:34},cw=w-pad.l-pad.r,ch=h-pad.t-pad.b,N=12,maxY=10;
+  const series=[{l:'Featured',col:C.ac,d:[9.8,8.2,6.4,4.9,3.6,2.8,2.1,1.7,1.4,1.1,.9,.7]},{l:'Sponsored',col:C.or,d:[8.6,7.1,5.2,3.8,2.6,1.9,1.4,1.1,.9,.7,.6,.5]},{l:'Standard',col:C.tl,d:[7.2,6.1,5.3,4.4,3.8,3.1,2.6,2.0,1.7,1.4,1.2,1.0]},{l:'Organic',col:C.pu,d:[5.4,4.8,4.3,3.9,3.4,3.0,2.7,2.3,2.0,1.8,1.6,1.4]}];
+  const xp=i=>pad.l+(i/(N-1))*cw,yp=v=>pad.t+ch-(v/maxY)*ch;
+  c.strokeStyle=C.bd;c.lineWidth=1;for(let i=0;i<=5;i++){const y=pad.t+(i/5)*ch;c.beginPath();c.moveTo(pad.l,y);c.lineTo(pad.l+cw,y);c.stroke();c.fillStyle=C.t3;c.font='9px system-ui';c.textAlign='right';c.fillText((10-i*2)+'%',pad.l-4,y+3);}
+  for(let i=0;i<N;i++){c.fillStyle=C.t3;c.font='9px system-ui';c.textAlign='center';c.fillText(i+1,xp(i),h-8);}
+  series.forEach(s=>{c.beginPath();s.d.forEach((v,i)=>i===0?c.moveTo(xp(i),yp(v)):c.lineTo(xp(i),yp(v)));c.strokeStyle=s.col;c.lineWidth=1.8;c.stroke();const lx=xp(N-1),ly=yp(s.d[N-1]);c.beginPath();c.arc(lx,ly,3,0,Math.PI*2);c.fillStyle=s.col;c.fill();c.fillStyle=s.col;c.font='9.5px system-ui';c.textAlign='left';c.fillText(s.l,lx+5,ly+3.5);});
+}
+
+function buildHeatmap(){
+  const t=document.getElementById('hm-tbl');if(!t)return;
+  const types=['Featured','Standard','Organic','Sponsored'],base={Featured:[9.8,8.2,6.4,4.9,3.6,2.8,2.1,1.7],Standard:[7.2,6.1,5.3,4.4,3.8,3.1,2.6,2.0],Organic:[5.4,4.8,4.3,3.9,3.4,3.0,2.7,2.3],Sponsored:[8.6,7.1,5.2,3.8,2.6,1.9,1.4,1.1]};
+  let html='<thead><tr><th></th>';types.forEach(t=>html+=`<th>${t}</th>`);html+='</tr></thead><tbody>';
+  for(let p=0;p<8;p++){html+=`<tr><td class="rl">Pos. ${p+1}</td>`;types.forEach(type=>{const val=base[type][p],r=val/9.8,bg=`rgba(${Math.round(20)},${Math.round(100+r*96)},${Math.round(168+r*20)},${.08+r*.65})`,tc=r>.55?'#ffffff':'#3D5060';html+=`<td style="background:${bg};color:${tc}">${val.toFixed(1)}%</td>`;});html+='</tr>';}
+  html+='</tbody>';t.innerHTML=html;
+}
+
+function buildTL(){
+  const b=document.getElementById('tl-body');if(!b)return;
+  const kpis=[{n:'Visits',v:['g:284K','y:198K','g:143K','r:52K','y:31K']},{n:'Lead Submissions',v:['g:3.142','g:2.556','y:1.567','r:577','y:405']},{n:'CVR',v:['g:3.1%','g:3.4%','y:2.8%','r:2.1%','y:2.6%']},{n:'CTR',v:['y:6.6%','g:7.4%','y:6.1%','r:5.2%','g:6.9%']},{n:'PLP→PDP Rate',v:['y:32.1%','r:29.4%','g:34.8%','r:28.7%','y:31.0%']},{n:'Form Completion',v:['g:46.8%','y:44.1%','g:51.3%','r:42.2%','y:45.0%']}];
+  const cm={g:'#1A8A60',y:'#A36A00',r:'#C0392B'};
+  b.innerHTML=kpis.map(k=>`<tr><td>${k.n}</td>${k.v.map(v=>{const[code,val]=v.split(':');return`<td><div class="tl-cell"><div class="tl-dot" style="background:${cm[code]}"></div><span class="tl-v">${val}</span></div></td>`;}).join('')}</tr>`).join('');
+}
+
+function drawMktCtr(){
+  const g=cv('cv-mktctr');if(!g)return;const{c,w,h}=g;
+  const cats=['SUV','Saloon','Electric','Van'],mkts=[{l:'ES',col:C.ac,d:[7.1,6.4,8.2,5.1]},{l:'IT',col:C.tl,d:[7.8,6.9,8.6,5.4]},{l:'FR',col:C.pu,d:[6.9,6.1,7.9,4.8]},{l:'PT',col:C.yl,d:[5.8,5.2,6.8,4.2]},{l:'DE',col:C.or,d:[7.2,6.7,8.9,5.8]}];
+  const pad={t:18,r:14,b:44,l:38},cw=w-pad.l-pad.r,ch=h-pad.t-pad.b,maxY=10,gw=cw/cats.length,bw=(gw-10)/mkts.length;
+  c.strokeStyle=C.bd;c.lineWidth=1;for(let i=0;i<=5;i++){const y=pad.t+(i/5)*ch;c.beginPath();c.moveTo(pad.l,y);c.lineTo(pad.l+cw,y);c.stroke();c.fillStyle=C.t3;c.font='9px system-ui';c.textAlign='right';c.fillText((10-i*2)+'%',pad.l-4,y+3);}
+  cats.forEach((cat,ci)=>{const gx=pad.l+ci*gw+5;mkts.forEach((m,mi)=>{const val=m.d[ci],bh2=(val/maxY)*ch;c.globalAlpha=.85;c.fillStyle=m.col;c.fillRect(gx+mi*bw,pad.t+ch-bh2,bw-2,bh2);c.globalAlpha=1;});c.fillStyle=C.t2;c.font='9.5px system-ui';c.textAlign='center';c.fillText(cat,pad.l+ci*gw+gw/2,h-28);});
+  mkts.forEach((m,mi)=>{const lx=pad.l+mi*44;c.fillStyle=m.col;c.fillRect(lx,h-15,10,5);c.fillStyle=C.t2;c.font='9px system-ui';c.textAlign='left';c.fillText(m.l,lx+13,h-10);});
+}
+
+// ── D5: Zero-result trend ──
+function drawZerores(){
+  const g=cv('cv-zerores');if(!g)return;const{c,w,h}=g;
+  const pad={t:18,r:16,b:28,l:44},cw=w-pad.l-pad.r,ch=h-pad.t-pad.b,N=30;
+  const r=prng(77);const vals=[];let v=9.1;
+  for(let i=0;i<N;i++){v+=(r()-.48)*.6;v=Math.min(12,Math.max(5.5,v));vals.push(v);}
+  // Force spike at day 12
+  vals[11]=11.8;vals[12]=10.4;
+  const maxY=13,minY=4;
+  const xp=i=>pad.l+(i/(N-1))*cw,yp=v=>pad.t+ch-((v-minY)/(maxY-minY))*ch;
+  c.strokeStyle=C.bd;c.lineWidth=1;
+  for(let i=0;i<=4;i++){const y=pad.t+(i/4)*ch;c.beginPath();c.moveTo(pad.l,y);c.lineTo(pad.l+cw,y);c.stroke();c.fillStyle=C.t3;c.font='9px system-ui';c.textAlign='right';c.fillText((13-i*2.25).toFixed(0)+'%',pad.l-4,y+3);}
+  ['23 Jun','30 Jun','7 Jul','14 Jul','23 Jul'].forEach((lb,i)=>{c.fillStyle=C.t3;c.font='9px system-ui';c.textAlign='center';c.fillText(lb,xp([0,7,14,21,29][i]),h-8);});
+  // Target line at 7%
+  const targetY=yp(7);c.setLineDash([3,4]);c.strokeStyle=C.gn+'80';c.lineWidth=1;c.beginPath();c.moveTo(pad.l,targetY);c.lineTo(pad.l+cw,targetY);c.stroke();c.setLineDash([]);c.fillStyle=C.gn+'80';c.font='9px system-ui';c.textAlign='left';c.fillText('target 7%',pad.l+2,targetY-3);
+  // Area
+  c.beginPath();vals.forEach((v2,i)=>i===0?c.moveTo(xp(i),yp(v2)):c.lineTo(xp(i),yp(v2)));c.lineTo(xp(N-1),pad.t+ch);c.lineTo(xp(0),pad.t+ch);c.closePath();
+  const gr=c.createLinearGradient(0,pad.t,0,pad.t+ch);gr.addColorStop(0,C.or+'33');gr.addColorStop(1,C.or+'05');c.fillStyle=gr;c.fill();
+  c.beginPath();vals.forEach((v2,i)=>i===0?c.moveTo(xp(i),yp(v2)):c.lineTo(xp(i),yp(v2)));c.strokeStyle=C.or;c.lineWidth=2;c.stroke();
+  // Spike annotation
+  c.fillStyle=C.rd;c.font='bold 9px system-ui';c.textAlign='center';c.fillText('▲ spike',xp(11),yp(11.8)-6);
+}
+
+// ── D5: Results count distribution ──
+function drawRcount(){
+  const g=cv('cv-rcount');if(!g)return;const{c,w,h}=g;
+  const bins=[{l:'0 results',v:8.4,col:C.rd},{l:'1 – 5',v:12.3,col:C.or},{l:'6 – 20',v:28.4,col:C.yl},{l:'21 – 50',v:31.2,col:C.ac},{l:'51 – 100',v:14.8,col:C.tl},{l:'> 100',v:4.9,col:C.gn}];
+  const max=31.2,pad={t:10,r:44,b:10,l:90},bh=18,gap=7;
+  bins.forEach((d,i)=>{
+    const y=pad.t+i*(bh+gap),bw=(w-pad.l-pad.r)*d.v/max;
+    c.fillStyle=d.col+'18';c.fillRect(pad.l,y,w-pad.l-pad.r,bh);
+    c.fillStyle=d.col;c.fillRect(pad.l,y,bw,bh);
+    c.fillStyle=C.t2;c.font='10px system-ui';c.textAlign='right';c.fillText(d.l,pad.l-6,y+bh/2+3.5);
+    c.fillStyle=C.t;c.textAlign='left';c.font='10px system-ui';c.fillText(d.v.toFixed(1)+'%',pad.l+bw+5,y+bh/2+3.5);
+  });
+}
+
+// ── D6: Field abandonment ──
+function drawAbandon(){
+  const g=cv('cv-abandon');if(!g)return;const{c,w,h}=g;
+  const fields=[
+    {l:'Phone',v:412,col:C.rd},
+    {l:'Privacy policy',v:289,col:C.or},
+    {l:'Preferred contact time',v:178,col:C.or},
+    {l:'Email',v:198,col:C.yl},
+    {l:'First name',v:67,col:C.t3},
+    {l:'Last name',v:52,col:C.t3},
+    {l:'Free message',v:34,col:C.t3},
+  ];
+  const max=450,pad={t:10,r:54,b:10,l:120},bh=17,gap=7;
+  fields.forEach((d,i)=>{
+    const y=pad.t+i*(bh+gap),bw=(w-pad.l-pad.r)*d.v/max;
+    c.fillStyle=d.col+'18';c.fillRect(pad.l,y,w-pad.l-pad.r,bh);
+    c.fillStyle=d.col;c.fillRect(pad.l,y,bw,bh);
+    c.fillStyle=C.t2;c.font='10px system-ui';c.textAlign='right';c.fillText(d.l,pad.l-6,y+bh/2+3.5);
+    c.fillStyle=C.t;c.textAlign='left';c.font='10.5px system-ui';c.fillText(d.v+' errors',pad.l+bw+5,y+bh/2+3.5);
+  });
+}
+
+// ── D6: Errors by page section ──
+function drawErrpg(){
+  const g=cv('cv-errpg');if(!g)return;const{c,w,h}=g;
+  const secs=[{l:'PLP',v:3863,col:C.or},{l:'PDP',v:3421,col:C.yl},{l:'Lead Form',v:3277,col:C.rd},{l:'Search',v:2286,col:C.ac}];
+  const max=4200,pad={t:24,r:16,b:16,l:90},bh=28,gap=20;
+  c.fillStyle=C.t3;c.font='9px system-ui';c.textAlign='center';c.fillText('Error occurrences',w/2,14);
+  secs.forEach((d,i)=>{
+    const y=pad.t+i*(bh+gap),bw=(w-pad.l-pad.r)*d.v/max;
+    c.fillStyle=d.col+'20';c.fillRect(pad.l,y,w-pad.l-pad.r,bh);
+    c.fillStyle=d.col;c.fillRect(pad.l,y,bw,bh);
+    c.fillStyle=C.t2;c.font='11px system-ui';c.textAlign='right';c.fillText(d.l,pad.l-8,y+bh/2+4);
+    c.fillStyle=C.t;c.textAlign='left';c.font='11px system-ui';c.fillText(d.v.toLocaleString('es-ES'),pad.l+bw+7,y+bh/2+4);
+    // % of total
+    const pct=(d.v/12847*100).toFixed(1);c.fillStyle=C.t3;c.font='9px system-ui';c.textAlign='right';c.fillText(pct+'%',w-pad.r,y+bh/2+4);
+  });
+}
+
+// ── D1: Nuevo vs. Usado × Duración de contrato ──
+function drawNewUsed() {
+  const g = cv('cv-newused'); if (!g) return;
+  const { c, w, h } = g;
+  const labels = ['24 m', '36 m', '48 m', '60 m', '72 m'];
+  const nuevo =  [2.1, 2.9, 3.8, 3.2, 2.4];
+  const usado =  [2.8, 3.4, 2.9, 2.2, 1.6];
+  const maxY = 4.6;
+  const pad = { t: 28, r: 16, b: 38, l: 44 };
+  const cw = w - pad.l - pad.r, ch = h - pad.t - pad.b;
+  const gw = cw / labels.length, bw = Math.max(12, (gw - 14) / 2);
+
+  c.strokeStyle = C.bd; c.lineWidth = 1;
+  for (let i = 0; i <= 4; i++) {
+    const y = pad.t + (i / 4) * ch;
+    c.beginPath(); c.moveTo(pad.l, y); c.lineTo(pad.l + cw, y); c.stroke();
+    c.fillStyle = C.t3; c.font = '9px system-ui'; c.textAlign = 'right';
+    c.fillText((maxY - i * maxY / 4).toFixed(1) + '%', pad.l - 5, y + 3);
+  }
+
+  labels.forEach((label, i) => {
+    const gx = pad.l + i * gw + (gw - bw * 2 - 4) / 2;
+    const nh = (nuevo[i] / maxY) * ch;
+    const uh = (usado[i] / maxY) * ch;
+
+    c.fillStyle = C.ac + '22'; c.fillRect(gx, pad.t, bw, ch);
+    c.fillStyle = C.ac; c.fillRect(gx, pad.t + ch - nh, bw, nh);
+
+    c.fillStyle = C.or + '22'; c.fillRect(gx + bw + 4, pad.t, bw, ch);
+    c.fillStyle = C.or; c.fillRect(gx + bw + 4, pad.t + ch - uh, bw, uh);
+
+    c.fillStyle = C.t2; c.font = '10px system-ui'; c.textAlign = 'center';
+    c.fillText(label, pad.l + i * gw + gw / 2, h - 16);
+  });
+
+  // Peak annotations
+  const px2 = pad.l + 1 * gw + gw / 2, py2 = pad.t + ch - (usado[1] / maxY) * ch - 9;
+  c.fillStyle = C.or; c.font = 'bold 8.5px system-ui'; c.textAlign = 'center';
+  c.fillText('used peak', px2, py2);
+  const px3 = pad.l + 2 * gw + gw / 2, py3 = pad.t + ch - (nuevo[2] / maxY) * ch - 9;
+  c.fillStyle = C.ac;
+  c.fillText('new peak', px3, py3);
+
+  // Legend
+  c.fillStyle = C.ac; c.fillRect(pad.l, 9, 10, 6);
+  c.fillStyle = C.t2; c.font = '9.5px system-ui'; c.textAlign = 'left'; c.fillText('New', pad.l + 13, 16);
+  c.fillStyle = C.or; c.fillRect(pad.l + 62, 9, 10, 6);
+  c.fillText('Used', pad.l + 75, 16);
+
+  // X axis label
+  c.fillStyle = C.t3; c.font = '9px system-ui'; c.textAlign = 'center';
+  c.fillText('Contract length', pad.l + cw / 2, h - 4);
+}
+
+// ── D2: form_type × CVR ──
+function drawFormType() {
+  const g = cv('cv-formtype'); if (!g) return;
+  const { c, w, h } = g;
+  const data = [
+    { l: 'Test drive request', cvr: 4.8, leads: 1842, col: C.tl },
+    { l: 'Request a quote', cvr: 3.2, leads: 1876, col: C.ac },
+    { l: 'Request information',    cvr: 2.4, leads: 3912, col: C.pu },
+    { l: 'Contact dealer', cvr: 2.1, leads: 617, col: C.or },
+  ];
+  const maxCVR = 5.5, pad = { t: 14, r: 16, b: 14, l: 148 }, bh = 26, gap = 11;
+  data.forEach((d, i) => {
+    const y = pad.t + i * (bh + gap);
+    const bw = (w - pad.l - pad.r) * d.cvr / maxCVR;
+    c.fillStyle = d.col + '18'; c.fillRect(pad.l, y, w - pad.l - pad.r, bh);
+    c.fillStyle = d.col; c.fillRect(pad.l, y, bw, bh);
+    c.fillStyle = C.t2; c.font = '10px system-ui'; c.textAlign = 'right';
+    c.fillText(d.l, pad.l - 7, y + bh / 2 + 3.5);
+    c.fillStyle = C.t; c.textAlign = 'left'; c.font = '10.5px system-ui';
+    c.fillText('CVR ' + d.cvr.toFixed(1) + '%  ·  ' + d.leads.toLocaleString('es-ES') + ' leads', pad.l + bw + 8, y + bh / 2 + 3.5);
+  });
+}
+
+function drawAll(){
+  drawTrend();drawMkt();
+  drawFuel();drawTrans();drawContract();buildPriceHeatmap();drawNewUsed();
+  drawFunnel();drawFormType();
+  buildHeatmap();drawDecay();
+  buildTL();drawMktCtr();
+  drawZerores();drawRcount();
+  drawAbandon();drawErrpg();
+}
+
+// ── Filter bar chip selection ──
+function selectChip(el) {
+  el.closest('.fb-group').querySelectorAll('.fb-chip').forEach(c => c.classList.remove('sel'));
+  el.classList.add('sel');
+}
+
+// ── Price × contract heatmap ──
+function buildPriceHeatmap() {
+  const t = document.getElementById('hm-price'); if (!t) return;
+  const contracts = ['24 m','36 m','48 m','60 m','72 m'];
+  const prices = ['< €250','€250–350','€350–450','€450–550','> €550'];
+  // CVR data: rows = price range, cols = contract months
+  const data = [
+    [2.1, 2.4, 2.8, 2.3, 1.9],
+    [2.4, 2.9, 3.4, 3.1, 2.6],
+    [2.7, 3.2, 3.9, 3.6, 3.0],
+    [2.9, 3.4, 4.1, 3.8, 3.2],
+    [2.6, 3.0, 3.7, 3.5, 2.9],
+  ];
+  const min = 1.9, max = 4.1;
+  let html = '<thead><tr><th style="text-align:left;padding-right:14px">Precio / mes</th>';
+  contracts.forEach(c => html += `<th>${c}</th>`);
+  html += '</tr></thead><tbody>';
+  prices.forEach((price, ri) => {
+    html += `<tr><td class="rl">${price}</td>`;
+    data[ri].forEach((val, ci) => {
+      const r = (val - min) / (max - min);
+      const isHigh = val >= 3.9;
+      const bg = `rgba(16,${Math.round(100 + r * 96)},${Math.round(168 + r * 20)},${0.08 + r * 0.65})`;
+      const tc = r > 0.55 ? '#ffffff' : '#3D5060';
+      const star = isHigh ? ' ★' : '';
+      html += `<td style="background:${bg};color:${tc};position:relative">${val.toFixed(1)}%${star}</td>`;
+    });
+    html += '</tr>';
+  });
+  html += '</tbody>';
+  t.innerHTML = html;
+}
+
+function downloadHTML() {
+  const html = '<!DOCTYPE html>\n' + document.documentElement.outerHTML;
+  const blob = new Blob([html], { type: 'text/html' });
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = 'aa-dashboard-proposal.html';
+  a.click();
+  URL.revokeObjectURL(a.href);
+}
+
+window.addEventListener('DOMContentLoaded', drawAll);
+window.addEventListener('resize', drawAll);
+</script>
+
+</body></html>
