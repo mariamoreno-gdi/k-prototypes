@@ -131,6 +131,15 @@ canvas{display:block;width:100%}
 ::-webkit-scrollbar{width:5px;height:5px}
 ::-webkit-scrollbar-track{background:transparent}
 ::-webkit-scrollbar-thumb{background:var(--bd2);border-radius:3px}
+
+.pf-bar{display:flex;align-items:center;gap:14px;padding:7px 16px;background:var(--s2);border-bottom:1px solid var(--bd)}
+.pf-label{font-size:9.5px;font-weight:700;letter-spacing:.07em;text-transform:uppercase;color:var(--t3);white-space:nowrap}
+.pf-sep{width:1px;height:14px;background:var(--bd);flex-shrink:0}
+.pf-check{display:flex;align-items:center;gap:6px;cursor:pointer;font-size:11.5px;color:var(--t2);user-select:none}
+.pf-check input[type=checkbox]{appearance:none;-webkit-appearance:none;width:14px;height:14px;border:1.5px solid var(--bd2);border-radius:3px;background:var(--s1);cursor:pointer;position:relative;flex-shrink:0;transition:background .15s,border-color .15s}
+.pf-check input[type=checkbox]:checked{background:var(--ac);border-color:var(--ac)}
+.pf-check input[type=checkbox]:checked::after{content:'';position:absolute;left:3px;top:0px;width:5px;height:9px;border-right:2px solid #fff;border-bottom:2px solid #fff;transform:rotate(35deg)}
+.sb-group-lbl{display:flex;align-items:center;gap:7px;padding:10px 12px 3px;font-size:8px;font-weight:700;letter-spacing:.09em;text-transform:uppercase;color:var(--t3)}.sb-group-lbl::after{content:'';flex:1;height:1px;background:var(--bd)}
 </style>
 
 <!-- TOPBAR -->
@@ -176,6 +185,8 @@ canvas{display:block;width:100%}
   <div class="sb-section">
     <div class="sb-label">Dashboards</div>
 
+    <div class="sb-group-lbl">Executive</div>
+
     <div class="nav-item active" onclick="show(0,this)">
       <svg class="nav-icon" viewBox="0 0 16 16" fill="currentColor"><rect x="1" y="1" width="6" height="6" rx="1"/><rect x="9" y="1" width="6" height="6" rx="1" opacity=".5"/><rect x="1" y="9" width="6" height="6" rx="1" opacity=".5"/><rect x="9" y="9" width="6" height="6" rx="1" opacity=".3"/></svg>
       Global Performance
@@ -187,6 +198,14 @@ canvas{display:block;width:100%}
       Leads by Config.
       <span class="nav-badge">P2</span>
     </div>
+
+    <div class="nav-item" onclick="show(4,this)">
+      <svg class="nav-icon" viewBox="0 0 16 16" fill="currentColor"><rect x="1" y="1" width="6" height="3" rx="1"/><rect x="9" y="1" width="6" height="3" rx="1" opacity=".6"/><rect x="1" y="6" width="6" height="3" rx="1" opacity=".6"/><rect x="9" y="6" width="6" height="3" rx="1" opacity=".4"/><rect x="1" y="11" width="6" height="3" rx="1" opacity=".4"/><rect x="9" y="11" width="6" height="3" rx="1" opacity=".25"/></svg>
+      Multi-Market Comparison
+      <span class="nav-badge">P5</span>
+    </div>
+
+    <div class="sb-group-lbl">Diagnostic</div>
 
     <div class="nav-item" onclick="show(2,this)">
       <svg class="nav-icon" viewBox="0 0 16 16" fill="currentColor"><rect x="2" y="2" width="12" height="3" rx="1"/><rect x="2" y="6.5" width="9" height="3" rx="1" opacity=".6"/><rect x="2" y="11" width="6" height="3" rx="1" opacity=".35"/></svg>
@@ -200,18 +219,13 @@ canvas{display:block;width:100%}
       <span class="nav-badge">P4</span>
     </div>
 
-    <div class="nav-item" onclick="show(4,this)">
-      <svg class="nav-icon" viewBox="0 0 16 16" fill="currentColor"><rect x="1" y="1" width="6" height="3" rx="1"/><rect x="9" y="1" width="6" height="3" rx="1" opacity=".6"/><rect x="1" y="6" width="6" height="3" rx="1" opacity=".6"/><rect x="9" y="6" width="6" height="3" rx="1" opacity=".4"/><rect x="1" y="11" width="6" height="3" rx="1" opacity=".4"/><rect x="9" y="11" width="6" height="3" rx="1" opacity=".25"/></svg>
-      Multi-Market Comparison
-      <span class="nav-badge">P5</span>
-    </div>
-
-
     <div class="nav-item" onclick="show(5,this)">
       <svg class="nav-icon" viewBox="0 0 16 16" fill="currentColor"><rect x="1" y="1" width="3" height="3" rx=".5"/><rect x="5" y="1" width="9" height="3" rx=".5" opacity=".6"/><rect x="1" y="6" width="3" height="3" rx=".5" opacity=".65"/><rect x="5" y="6" width="9" height="3" rx=".5" opacity=".4"/><rect x="1" y="11" width="3" height="3" rx=".5" opacity=".35"/><rect x="5" y="11" width="7" height="3" rx=".5" opacity=".2"/></svg>
       Search &amp; Filters
       <span class="nav-badge">P6</span>
     </div>
+
+    <div class="sb-group-lbl">Technical Diagnostic</div>
 
     <div class="nav-item" onclick="show(6,this)">
       <svg class="nav-icon" viewBox="0 0 16 16" fill="currentColor"><rect x="1" y="2" width="14" height="2.5" rx="1" opacity=".3"/><rect x="1" y="6.5" width="14" height="2.5" rx="1"/><rect x="1" y="11" width="14" height="2.5" rx="1" opacity=".3"/></svg>
@@ -243,6 +257,13 @@ canvas{display:block;width:100%}
       </div>
       <div class="ph-desc">Single view of global lead generation performance. Dimensions: market, product_category. Metrics: Visits, Lead Submissions, CVR (calc.), Impressions, CTR. Visualisation: Scorecards + trend line + freeform table + bar ranking.</div>
     </div>
+  </div>
+  <div class="pf-bar">
+    <span class="pf-label">Product</span>
+    <div class="pf-sep"></div>
+    <label class="pf-check"><input type="checkbox" id="pf-leasing" checked onchange="applyPF()"><span>Leasing</span></label>
+    <label class="pf-check"><input type="checkbox" id="pf-renting" checked onchange="applyPF()"><span>Renting</span></label>
+    <label class="pf-check"><input type="checkbox" id="pf-flex" checked onchange="applyPF()"><span>Flex</span></label>
   </div>
   <div class="scorecards">
     <div class="sc"><div class="sc-label">Visits</div><div class="sc-val">284.3K</div><div class="sc-chg up">▲ +12.3% vs prev. month</div></div>
@@ -287,7 +308,7 @@ canvas{display:block;width:100%}
     <div class="ph-left">
       <div class="ph-row">
         <div class="ph-title">2. Leads by Vehicle Configuration</div>
-        <span class="tag tag-mix">Mixed</span>
+        <span class="tag tag-exec">Executive</span>
         <span class="pbadge pb1">▲ Build Priority 2</span>
       </div>
       <div class="ph-desc">Which configurations generate the most leads. Dimensions: fuel_type, transmission, contract_months, avg_monthly_price. New vs. Used.</div>
@@ -672,13 +693,16 @@ function prng(seed) {
 }
 
 // ── Trend chart ──
-function drawTrend() {
+function drawTrend(oV, oL) {
   const g = cv('cv-trend'); if (!g) return;
   const { c, w, h } = g;
   const pad = {t:18,r:16,b:28,l:48}, cw=w-pad.l-pad.r, ch=h-pad.t-pad.b, N=30;
-  const r = prng(42); const visits=[], leads=[];
-  let v=8800, l=245;
-  for(let i=0;i<N;i++){v+=(r()-.45)*620;visits.push(Math.max(6000,v));l+=(r()-.46)*18;leads.push(Math.max(190,l));}
+  let visits, leads;
+  if (oV && oL) { visits=oV; leads=oL; } else {
+    const r = prng(42); visits=[]; leads=[];
+    let v=8800, l=245;
+    for(let i=0;i<N;i++){v+=(r()-.45)*620;visits.push(Math.max(6000,v));l+=(r()-.46)*18;leads.push(Math.max(190,l));}
+  }
   const maxV=Math.max(...visits), minV=Math.min(...visits)*.95, maxL=Math.max(...leads), minL=Math.min(...leads)*.95;
   const xp=i=>pad.l+(i/(N-1))*cw, yV=v=>pad.t+ch-((v-minV)/(maxV-minV))*ch, yL=v=>pad.t+ch-((v-minL)/(maxL-minL))*ch;
   c.strokeStyle=C.bd;c.lineWidth=1;
@@ -692,10 +716,10 @@ function drawTrend() {
   c.strokeStyle=C.tl;c.lineWidth=1.8;c.setLineDash([4,3]);c.beginPath();c.moveTo(w-74,7);c.lineTo(w-62,7);c.stroke();c.setLineDash([]);c.fillStyle=C.t2;c.fillText('Leads',w-58,10);
 }
 
-function drawMkt() {
+function drawMkt(od) {
   const g=cv('cv-mkt');if(!g)return;const{c,w,h}=g;
-  const data=[{l:'ES',v:3142,col:C.ac},{l:'IT',v:2556,col:C.tl},{l:'FR',v:1567,col:C.pu},{l:'PT',v:577,col:C.yl},{l:'DE',v:405,col:C.or}];
-  const max=3142,pad={t:14,r:52,b:14,l:38},bh=19,gap=9;
+  const data=od||[{l:'ES',v:3142,col:C.ac},{l:'IT',v:2556,col:C.tl},{l:'FR',v:1567,col:C.pu},{l:'PT',v:577,col:C.yl},{l:'DE',v:405,col:C.or}];
+  const max=Math.max(...data.map(d=>d.v)),pad={t:14,r:52,b:14,l:38},bh=19,gap=9;
   data.forEach((d,i)=>{const y=pad.t+i*(bh+gap),bw=(w-pad.l-pad.r)*d.v/max;c.fillStyle=d.col+'20';c.fillRect(pad.l,y,w-pad.l-pad.r,bh);c.fillStyle=d.col;c.fillRect(pad.l,y,bw,bh);c.fillStyle=C.t2;c.font='10.5px system-ui';c.textAlign='right';c.fillText(d.l,pad.l-6,y+bh/2+3.5);c.fillStyle=C.t;c.textAlign='left';c.font='10px system-ui';c.fillText(d.v.toLocaleString('es-ES'),pad.l+bw+5,y+bh/2+3.5);});
 }
 
@@ -909,6 +933,57 @@ function drawFormType() {
     c.fillText('CVR ' + d.cvr.toFixed(1) + '%  ·  ' + d.leads.toLocaleString('es-ES') + ' leads', pad.l + bw + 8, y + bh / 2 + 3.5);
   });
 }
+
+// ── Product filter data ──
+// Splits sum exactly to the "All" totals: visits=284.3K, leads=8247, mkt=ES3142/IT2556/FR1567/PT577/DE405
+const PROD = {
+  leasing:{
+    visits:148200,leads:4142,imp:680000,ctr:6.60,
+    mkt:[{l:'ES',v:1652,col:C.ac},{l:'IT',v:1287,col:C.tl},{l:'FR',v:721,col:C.pu},{l:'PT',v:312,col:C.yl},{l:'DE',v:170,col:C.or}],
+    tv:[4890,5240,5010,5680,5420,5830,5610,5280,5700,5950,5510,5290,6180,6390,5940,6510,6080,5740,6280,6510,6140,6380,5940,6280,6060,6380,6150,5940,6280,6180],
+    tl:[124,141,136,152,145,157,151,143,154,160,148,141,166,172,160,175,163,154,169,175,165,172,160,169,163,172,165,160,169,165]
+  },
+  renting:{
+    visits:89400,leads:2752,imp:380000,ctr:6.90,
+    mkt:[{l:'ES',v:997,col:C.ac},{l:'IT',v:823,col:C.tl},{l:'FR',v:512,col:C.pu},{l:'PT',v:198,col:C.yl},{l:'DE',v:222,col:C.or}],
+    tv:[2780,3100,2960,3290,3140,3380,3260,3080,3330,3490,3230,3090,3600,3810,3530,3820,3560,3290,3640,3810,3600,3750,3530,3640,3510,3700,3560,3390,3640,3550],
+    tl:[82,94,90,101,96,104,100,95,102,107,99,95,111,117,108,118,109,100,112,117,110,115,108,112,108,114,110,104,112,109]
+  },
+  flex:{
+    visits:46700,leads:1353,imp:180000,ctr:6.30,
+    mkt:[{l:'ES',v:493,col:C.ac},{l:'IT',v:446,col:C.tl},{l:'FR',v:334,col:C.pu},{l:'PT',v:67,col:C.yl},{l:'DE',v:13,col:C.or}],
+    tv:[1420,1580,1510,1680,1600,1720,1660,1570,1690,1770,1640,1580,1830,1900,1770,1950,1800,1670,1840,1910,1820,1900,1770,1840,1760,1870,1800,1730,1830,1790],
+    tl:[38,44,42,47,45,48,47,44,47,50,46,44,51,53,50,54,51,47,52,54,52,54,50,52,50,53,51,49,52,51]
+  }
+};
+
+function applyPF(){
+  const keys=['leasing','renting','flex'];
+  const sel=keys.filter(k=>document.getElementById('pf-'+k).checked);
+  // Prevent empty selection: restore all
+  if(!sel.length){keys.forEach(k=>document.getElementById('pf-'+k).checked=true);applyPF();return;}
+  const N=30;
+  const agg={visits:0,leads:0,imp:0,ctrW:0,
+    mkt:[{l:'ES',v:0,col:C.ac},{l:'IT',v:0,col:C.tl},{l:'FR',v:0,col:C.pu},{l:'PT',v:0,col:C.yl},{l:'DE',v:0,col:C.or}],
+    tv:new Array(N).fill(0),tl:new Array(N).fill(0)};
+  sel.forEach(k=>{const d=PROD[k];agg.visits+=d.visits;agg.leads+=d.leads;agg.imp+=d.imp;agg.ctrW+=d.ctr*d.visits;
+    d.mkt.forEach((m,i)=>agg.mkt[i].v+=m.v);
+    d.tv.forEach((v,i)=>agg.tv[i]+=v);d.tl.forEach((v,i)=>agg.tl[i]+=v);});
+  const cvr=(agg.leads/agg.visits*100),ctr=agg.ctrW/agg.visits;
+  function fmt(n){return n>=1e6?(n/1e6).toFixed(2)+'M':n>=1000?(n/1000).toFixed(1)+'K':n.toLocaleString();}
+  document.querySelectorAll('#d0 .sc').forEach(sc=>{
+    const lbl=sc.querySelector('.sc-label').textContent;
+    const val=sc.querySelector('.sc-val');
+    if(lbl==='Visits')val.textContent=fmt(agg.visits);
+    else if(lbl==='Lead Submissions')val.textContent=agg.leads.toLocaleString();
+    else if(lbl==='CVR (calculated)')val.textContent=cvr.toFixed(2)+'%';
+    else if(lbl==='Vehicle Impressions')val.textContent=fmt(agg.imp);
+    else if(lbl==='CTR')val.textContent=ctr.toFixed(2)+'%';
+  });
+  drawTrend(agg.tv,agg.tl);
+  drawMkt(agg.mkt);
+}
+
 
 function drawAll(){
   drawTrend();drawMkt();
