@@ -259,7 +259,7 @@ canvas{display:block;width:100%}
         <span class="tag tag-exec">Executive</span>
         <span class="pbadge pb1">▲ Build Priority 1</span>
       </div>
-      <div class="ph-desc">Single view of global lead generation performance. Dimensions: market, product_category. Metrics: Visits, Lead Submissions, CVR (calc.), Impressions, CTR. Visualisation: Scorecards + trend line + freeform table + bar ranking.</div>
+      <div class="ph-desc">Single view of global lead generation performance. Dimensions: market, product_category. Metrics: Visits, Lead Submissions, CR (calc.), Impressions, CTR. Visualisation: Scorecards + trend line + freeform table + bar ranking.</div>
     </div>
   </div>
   <div class="pf-bar">
@@ -274,8 +274,8 @@ canvas{display:block;width:100%}
   <div class="scorecards">
     <div class="sc"><div class="sc-label">Visits</div><div class="sc-val">284.3K</div><div class="sc-chg up">▲ +12.3% vs prev. month</div></div>
     <div class="sc"><div class="sc-label">Lead Submissions</div><div class="sc-val">8,247</div><div class="sc-chg up">▲ +8.1%</div></div>
-    <div class="sc"><div class="sc-label">CVR (calculated)</div><div class="sc-val">2.90%</div><div class="sc-chg wn">▼ −0.28 pp</div></div>
-    <div class="sc"><div class="sc-label">Vehicle Impressions</div><div class="sc-val">1.24M</div><div class="sc-chg up">▲ +18.4%</div></div>
+    <div class="sc"><div class="sc-label">CR (calculated)</div><div class="sc-val">2.90%</div><div class="sc-chg wn">▼ −0.28 pp</div></div>
+    <div class="sc"><div class="sc-label">PDP Impressions</div><div class="sc-val">1.24M</div><div class="sc-chg up">▲ +18.4%</div></div>
     <div class="sc"><div class="sc-label">CTR</div><div class="sc-val">6.63%</div><div class="sc-chg up">▲ +1.10 pp</div></div>
   </div>
   <div class="alert">⚠ No acquisition/campaign data (channel, source, UTM) · marketing segmentation not yet available.</div>
@@ -294,7 +294,7 @@ canvas{display:block;width:100%}
       <div class="wh"><div class="wh-title">Freeform table · product_category × Metrics</div></div>
       <div class="ff-wrap">
         <table class="ff">
-          <thead><tr><th>product_category</th><th>Visits ↓</th><th>Lead Submissions</th><th>CVR</th><th>Impressions</th><th>CTR</th><th>Δ CVR</th></tr></thead>
+          <thead><tr><th>product_category</th><th>Visits ↓</th><th>Lead Submissions</th><th>CR</th><th>Impressions</th><th>CTR</th><th>Δ CR</th></tr></thead>
           <tbody>
             <tr><td><span class="mbar" style="width:70px"></span>SUV / 4WD</td><td>91,820</td><td>2,934</td><td>3.19%</td><td>412,300</td><td>7.12%</td><td class="tu">▲ +0.21 pp</td></tr>
             <tr><td><span class="mbar" style="width:55px"></span>Saloon / Sedan</td><td>72,440</td><td>2,108</td><td>2.91%</td><td>298,600</td><td>6.43%</td><td class="tu">▲ +0.08 pp</td></tr>
@@ -345,7 +345,7 @@ canvas{display:block;width:100%}
       <div class="wh"><div class="wh-title">New vs. Used · Breakdown by product_category</div></div>
       <div class="ff-wrap">
         <table class="ff">
-          <thead><tr><th>product_category</th><th>New Leads</th><th>New CVR</th><th>Used Leads</th><th>Used CVR</th><th>Avg New Price</th><th>Avg Used Price</th></tr></thead>
+          <thead><tr><th>product_category</th><th>New Leads</th><th>New CR</th><th>Used Leads</th><th>Used CR</th><th>Avg New Price</th><th>Avg Used Price</th></tr></thead>
           <tbody>
             <tr><td>SUV / 4WD</td><td>1,893</td><td>3.42%</td><td>1,041</td><td>2.88%</td><td>€ 499</td><td>€ 312</td></tr>
             <tr><td>Saloon / Sedan</td><td>1,380</td><td>3.12%</td><td>728</td><td>2.68%</td><td>€ 358</td><td>€ 245</td></tr>
@@ -363,7 +363,7 @@ canvas{display:block;width:100%}
       <div class="wh">
         <div>
           <div class="wh-title">Which price and contract length combination converts best?</div>
-          <div class="wh-sub">CVR by monthly price range × contract duration · deeper colour = higher conversion</div>
+          <div class="wh-sub">CR by monthly price range × contract duration · deeper colour = higher conversion</div>
         </div>
       </div>
       <div class="hm-wrap"><table class="hm" id="hm-price"></table></div>
@@ -376,7 +376,7 @@ canvas{display:block;width:100%}
       <div class="wh">
         <div>
           <div class="wh-title">Do used car buyers prefer shorter contracts?</div>
-          <div class="wh-sub">CVR by contract length · New (blue) vs. Used (orange) · dim: new/used × contract_months</div>
+          <div class="wh-sub">CR by contract length · New (blue) vs. Used (orange) · dim: new/used × contract_months</div>
         </div>
       </div>
       <div class="wcv"><canvas id="cv-newused" height="185"></canvas></div>
@@ -432,11 +432,11 @@ canvas{display:block;width:100%}
       <div class="wh">
         <div>
           <div class="wh-title">Which form type converts best?</div>
-          <div class="wh-sub">CVR and leads generated · dim: form_type · bars by conversion rate</div>
+          <div class="wh-sub">CR and leads generated · dim: form_type · bars by conversion rate</div>
         </div>
       </div>
       <div class="wcv"><canvas id="cv-formtype" height="165"></canvas></div>
-      <div class="fn-note" style="padding-bottom:10px">Test drive requests have the highest CVR (4.8%) because users arriving there have very defined purchase intent · though less volume than "Request information". Useful for deciding which form to promote most prominently on the PDP.</div>
+      <div class="fn-note" style="padding-bottom:10px">Test drive requests have the highest CR (4.8%) because users arriving there have very defined purchase intent · though less volume than "Request information". Useful for deciding which form to promote most prominently on the PDP.</div>
     </div>
   </div>
 </div>
@@ -471,10 +471,10 @@ canvas{display:block;width:100%}
   </div>
   <div class="wrow w1">
     <div class="widget">
-      <div class="wh"><div class="wh-title">Top models · PDP Views, Leads generated, CVR, Avg position</div></div>
+      <div class="wh"><div class="wh-title">Top models · PDP Views, Leads generated, CR, Avg position</div></div>
       <div class="ff-wrap">
         <table class="ff">
-          <thead><tr><th>_model</th><th>PDP Views</th><th>Lead Submissions</th><th>CVR</th><th>Avg Position (click)</th><th>Dominant list_type</th></tr></thead>
+          <thead><tr><th>_model</th><th>PDP Views</th><th>Lead Submissions</th><th>CR</th><th>Avg Position (click)</th><th>Dominant list_type</th></tr></thead>
           <tbody>
             <tr><td>Toyota RAV4 Hybrid</td><td>6,840</td><td>312</td><td>4.56%</td><td>2.1</td><td>featured</td></tr>
             <tr><td>Toyota Corolla Cross</td><td>5,920</td><td>248</td><td>4.19%</td><td>2.4</td><td>featured</td></tr>
@@ -504,9 +504,9 @@ canvas{display:block;width:100%}
     </div>
   </div>
   <div class="scorecards">
-    <div class="sc"><div class="sc-label">Best CVR</div><div class="sc-val">IT 3.4%</div><div class="sc-chg up">▲ reference</div></div>
+    <div class="sc"><div class="sc-label">Best CR</div><div class="sc-val">IT 3.4%</div><div class="sc-chg up">▲ reference</div></div>
     <div class="sc"><div class="sc-label">Highest CTR</div><div class="sc-val">IT 7.4%</div><div class="sc-chg up">▲ +0.8 pp vs ES</div></div>
-    <div class="sc"><div class="sc-label">Market with most drops</div><div class="sc-val">PT</div><div class="sc-chg dn">▼ CVR 2.1%</div></div>
+    <div class="sc"><div class="sc-label">Market with most drops</div><div class="sc-val">PT</div><div class="sc-chg dn">▼ CR 2.1%</div></div>
     <div class="sc"><div class="sc-label">Active markets</div><div class="sc-val">5</div><div class="sc-chg nt">ES · IT · FR · PT · DE</div></div>
   </div>
   <div class="wrow w11">
@@ -564,7 +564,7 @@ canvas{display:block;width:100%}
       <div class="wh"><div class="wh-title">Top filter combinations · Ranked by Leads generated</div></div>
       <div class="ff-wrap">
         <table class="ff">
-          <thead><tr><th>filter_value Combination</th><th>Sessions with filter</th><th>Search CTR</th><th>Leads generated</th><th>CVR</th><th>Δ CVR vs no filter</th></tr></thead>
+          <thead><tr><th>filter_value Combination</th><th>Sessions with filter</th><th>Search CTR</th><th>Leads generated</th><th>CR</th><th>Δ CR vs no filter</th></tr></thead>
           <tbody>
             <tr><td><span class="mbar" style="width:60px"></span>fuel=Hybrid + price_max=€500</td><td>21,840</td><td>78.4%</td><td>1,842</td><td>4.22%</td><td class="tu">▲ +1.32 pp</td></tr>
             <tr><td><span class="mbar" style="width:50px"></span>body=SUV + fuel=Electric</td><td>14,320</td><td>81.2%</td><td>1,234</td><td>5.12%</td><td class="tu">▲ +2.22 pp</td></tr>
@@ -773,7 +773,7 @@ function buildHeatmap(){
 
 function buildTL(){
   const b=document.getElementById('tl-body');if(!b)return;
-  const kpis=[{n:'Visits',v:['g:284K','y:198K','g:143K','r:52K','y:31K']},{n:'Lead Submissions',v:['g:3.142','g:2.556','y:1.567','r:577','y:405']},{n:'CVR',v:['g:3.1%','g:3.4%','y:2.8%','r:2.1%','y:2.6%']},{n:'CTR',v:['y:6.6%','g:7.4%','y:6.1%','r:5.2%','g:6.9%']},{n:'PLP→PDP Rate',v:['y:32.1%','r:29.4%','g:34.8%','r:28.7%','y:31.0%']},{n:'Form Completion',v:['g:46.8%','y:44.1%','g:51.3%','r:42.2%','y:45.0%']}];
+  const kpis=[{n:'Visits',v:['g:284K','y:198K','g:143K','r:52K','y:31K']},{n:'Lead Submissions',v:['g:3.142','g:2.556','y:1.567','r:577','y:405']},{n:'CR',v:['g:3.1%','g:3.4%','y:2.8%','r:2.1%','y:2.6%']},{n:'CTR',v:['y:6.6%','g:7.4%','y:6.1%','r:5.2%','g:6.9%']},{n:'PLP→PDP Rate',v:['y:32.1%','r:29.4%','g:34.8%','r:28.7%','y:31.0%']},{n:'Form Completion',v:['g:46.8%','y:44.1%','g:51.3%','r:42.2%','y:45.0%']}];
   const cm={g:'#1A8A60',y:'#A36A00',r:'#C0392B'};
   b.innerHTML=kpis.map(k=>`<tr><td>${k.n}</td>${k.v.map(v=>{const[code,val]=v.split(':');return`<td><div class="tl-cell"><div class="tl-dot" style="background:${cm[code]}"></div><span class="tl-v">${val}</span></div></td>`;}).join('')}</tr>`).join('');
 }
@@ -917,7 +917,7 @@ function drawNewUsed() {
   c.fillText('Contract length', pad.l + cw / 2, h - 4);
 }
 
-// ── D2: form_type × CVR ──
+// ── D2: form_type × CR ──
 function drawFormType() {
   const g = cv('cv-formtype'); if (!g) return;
   const { c, w, h } = g;
@@ -927,16 +927,16 @@ function drawFormType() {
     { l: 'Request information',    cvr: 2.4, leads: 3912, col: C.pu },
     { l: 'Contact dealer', cvr: 2.1, leads: 617, col: C.or },
   ];
-  const maxCVR = 5.5, pad = { t: 14, r: 16, b: 14, l: 148 }, bh = 26, gap = 11;
+  const maxCR = 5.5, pad = { t: 14, r: 16, b: 14, l: 148 }, bh = 26, gap = 11;
   data.forEach((d, i) => {
     const y = pad.t + i * (bh + gap);
-    const bw = (w - pad.l - pad.r) * d.cvr / maxCVR;
+    const bw = (w - pad.l - pad.r) * d.cvr / maxCR;
     c.fillStyle = d.col + '18'; c.fillRect(pad.l, y, w - pad.l - pad.r, bh);
     c.fillStyle = d.col; c.fillRect(pad.l, y, bw, bh);
     c.fillStyle = C.t2; c.font = '10px system-ui'; c.textAlign = 'right';
     c.fillText(d.l, pad.l - 7, y + bh / 2 + 3.5);
     c.fillStyle = C.t; c.textAlign = 'left'; c.font = '10.5px system-ui';
-    c.fillText('CVR ' + d.cvr.toFixed(1) + '%  ·  ' + d.leads.toLocaleString('es-ES') + ' leads', pad.l + bw + 8, y + bh / 2 + 3.5);
+    c.fillText('CR ' + d.cvr.toFixed(1) + '%  ·  ' + d.leads.toLocaleString('es-ES') + ' leads', pad.l + bw + 8, y + bh / 2 + 3.5);
   });
 }
 
@@ -994,8 +994,8 @@ function applyPF(){
     const val=sc.querySelector('.sc-val');
     if(lbl==='Visits')val.textContent=fmt(agg.visits);
     else if(lbl==='Lead Submissions')val.textContent=agg.leads.toLocaleString();
-    else if(lbl==='CVR (calculated)')val.textContent=cvr.toFixed(2)+'%';
-    else if(lbl==='Vehicle Impressions')val.textContent=fmt(agg.imp);
+    else if(lbl==='CR (calculated)')val.textContent=cvr.toFixed(2)+'%';
+    else if(lbl==='PDP Impressions')val.textContent=fmt(agg.imp);
     else if(lbl==='CTR')val.textContent=ctr.toFixed(2)+'%';
   });
   drawTrend(agg.tv,agg.tl);
@@ -1024,7 +1024,7 @@ function buildPriceHeatmap() {
   const t = document.getElementById('hm-price'); if (!t) return;
   const contracts = ['24 m','36 m','48 m','60 m','72 m'];
   const prices = ['< €250','€250–350','€350–450','€450–550','> €550'];
-  // CVR data: rows = price range, cols = contract months
+  // CR data: rows = price range, cols = contract months
   const data = [
     [2.1, 2.4, 2.8, 2.3, 1.9],
     [2.4, 2.9, 3.4, 3.1, 2.6],
@@ -1066,5 +1066,6 @@ window.addEventListener('DOMContentLoaded', drawAll);
 window.addEventListener('resize', drawAll);
 </script>
 
+</body></html>
 </body></html>
 </body></html>
